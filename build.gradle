@@ -13,7 +13,7 @@ plugins {
 }
 
 group = 'io.github.lsd-consulting'
-project.version = "1.0.0-SNAPSHOT"
+project.version = scmVersion.version
 println "Build Version = ${project.version}"
 
 sourceCompatibility = '11'
@@ -68,9 +68,9 @@ test {
 
 jacocoTestReport {
     reports {
-        xml.enabled = true
-        html.enabled = true
-        html.setDestination( new File("${project.buildDir}/reports/coverage"))
+        xml.enabled true
+        html.enabled true
+        html.destination new File("${project.buildDir}/reports/coverage")
     }
 }
 
@@ -79,7 +79,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = "$group"
             artifactId = 'lsd-distributed-generator'
-            version = "1.0.0-SNAPSHOT"
+            version = scmVersion.version
 
             from components.java
             artifact sourcesJar
@@ -140,7 +140,7 @@ signing {
 apply plugin: 'io.spring.dependency-management'
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2020.0.1'
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2020.0.3'
         mavenBom 'io.pivotal.spring.cloud:spring-cloud-services-dependencies:3.2.0.RELEASE'
         mavenBom SpringBootPlugin.BOM_COORDINATES
     }
