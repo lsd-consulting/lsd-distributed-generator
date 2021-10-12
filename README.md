@@ -8,15 +8,15 @@ A Liquid Sequence Diagram generator from data gathered by the `lsd-distributed-i
 
 Here is a sample of an LSD that this library can generate:
 
-![LSD](https://github.com/lsd-consulting/lsd-distributed-generator/blob/master/image/lsd-example.png?raw=true)
+![LSD](https://github.com/lsd-consulting/lsd-distributed-generator/blob/main/image/lsd-example.png?raw=true)
 
 along with the source for the LSD:
 
-![LSD Source](https://github.com/lsd-consulting/lsd-distributed-generator/blob/master/image/lsd-source-example.png?raw=true)
+![LSD Source](https://github.com/lsd-consulting/lsd-distributed-generator/blob/main/image/lsd-source-example.png?raw=true)
 
 It also generates a component diagram:
 
-![Component diagram](https://github.com/lsd-consulting/lsd-distributed-generator/blob/master/image/lsd-component-diagram-example.png?raw=true)
+![Component diagram](https://github.com/lsd-consulting/lsd-distributed-generator/blob/main/image/lsd-component-diagram-example.png?raw=true)
 
 # Usage
 
