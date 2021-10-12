@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.lsdconsulting.lsd.distributed.config.DbPropertyConfig,\
+  io.lsdconsulting.lsd.distributed.config.LibraryConfig
