@@ -8,11 +8,11 @@ pitest {
     testPlugin = "junit5"
     useClasspathFile = true
     timeoutConstInMillis = 20000
-    targetClasses = ['io.lsdconsulting.lsd.distributed.*']
+    targetClasses = ['io.lsdconsulting.lsd.distributed.generator*']
     excludedTestClasses = [
-            'io.lsdconsulting.lsd.distributed.integration.LsdLoggerIT'
+            'io.lsdconsulting.lsd.distributed.generator.integration.LsdLoggerIT'
     ]
-    excludedClasses = [ 'io.lsdconsulting.lsd.distributed.config.*']
+    excludedClasses = [ 'io.lsdconsulting.lsd.distributed.generator.config.*']
     threads = 4
     outputFormats = ['HTML']
     coverageThreshold = 99
