@@ -10,11 +10,11 @@ Here is a sample of an LSD that this library can generate:
 
 ![LSD](https://github.com/lsd-consulting/lsd-distributed-generator/blob/main/image/lsd-example.png?raw=true)
 
-along with the source for the LSD:
+along with the PlantUML source for the LSD:
 
 ![LSD Source](https://github.com/lsd-consulting/lsd-distributed-generator/blob/main/image/lsd-source-example.png?raw=true)
 
-It also generates a component diagram:
+It also generates a component diagram (requires Graphviz):
 
 ![Component diagram](https://github.com/lsd-consulting/lsd-distributed-generator/blob/main/image/lsd-component-diagram-example.png?raw=true)
 
@@ -23,7 +23,7 @@ It also generates a component diagram:
 To use the `lsd-distributed-generator` library just add it to the dependencies:
 
 ```groovy
-implementation "io.github.lsd-consulting:lsd-distributed-generator:1.0.0"
+implementation "io.github.lsd-consulting:lsd-distributed-generator:+"
 ```
 
 and configure through app properties:
