@@ -4,12 +4,14 @@ import io.lsdconsulting.lsd.distributed.generator.integration.testapp.repository
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
+import static io.lsdconsulting.lsd.distributed.generator.integration.testapp.repository.TestRepository.setupDatabase;
+
 @TestConfiguration
 public class RepositoryConfig {
 
     // This is because the configs in spring.factories run always before any test configs.
     static {
-        TestRepository.setupDatabase();
+        setupDatabase();
     }
 
     @Bean
