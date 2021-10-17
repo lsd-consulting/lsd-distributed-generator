@@ -7,9 +7,6 @@ dependencies {
 
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation('org.springframework.boot:spring-boot-configuration-processor') {
-        because 'We want IntelliJ to recognise the Spring Boot properties'
-    }
 
     // Database driver for storing interactions
     implementation 'org.mongodb:mongo-java-driver:3.12.10'
