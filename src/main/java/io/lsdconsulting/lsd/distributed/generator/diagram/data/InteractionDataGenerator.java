@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
 import lombok.Builder;
 import lombok.Value;
+import lsd.format.Parser;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,8 +20,13 @@ public class InteractionDataGenerator {
                 .requestHeaders(interceptedInteraction.getType().equals(REQUEST) ? interceptedInteraction.getRequestHeaders() : null)
                 .responseHeaders(interceptedInteraction.getType().equals(RESPONSE) ? interceptedInteraction.getResponseHeaders() : null)
                 .headers(List.of(PUBLISH, CONSUME).contains(interceptedInteraction.getType()) ? interceptedInteraction.getRequestHeaders() : null)
-                .body(interceptedInteraction.getBody())
+                .body(generateBody(interceptedInteraction.getBody()))
                 .build();
+    }
+
+    private Object generateBody(String body) {
+        Map<String, Object> bodyMap = Parser.parse(body);
+        return bodyMap.isEmpty() ? body : bodyMap;
     }
 
     @Value
@@ -35,6 +41,6 @@ public class InteractionDataGenerator {
         @JsonInclude(NON_EMPTY)
         Map<String, Collection<String>> headers;
 
-        String body;
+        Object body;
     }
 }

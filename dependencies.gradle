@@ -2,7 +2,7 @@ dependencies {
 
     // LSD
     api 'io.github.lsd-consulting:lsd-core:0.1.32'
-    implementation 'io.github.lsd-consulting:lsd-formatting-library:1.0.0'
+    implementation 'io.github.lsd-consulting:lsd-formatting-library:1.0.1'
     implementation 'io.github.lsd-consulting:lsd-distributed-mongodb-access:0.1.4'
 
     // Spring
@@ -11,4 +11,8 @@ dependencies {
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    // Other
+    implementation 'com.google.code.gson:gson:2.8.8'
+
 }
