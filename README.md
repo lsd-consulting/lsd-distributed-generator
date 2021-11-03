@@ -14,7 +14,7 @@ along with the PlantUML source for the LSD:
 
 ![LSD Source](https://github.com/lsd-consulting/lsd-distributed-generator/blob/main/image/lsd-source-example.png?raw=true)
 
-It also generates a component diagram (requires Graphviz):
+It also generates a component diagram:
 
 ![Component diagram](https://github.com/lsd-consulting/lsd-distributed-generator/blob/main/image/lsd-component-diagram-example.png?raw=true)
 
