@@ -1,9 +1,9 @@
 dependencies {
 
     // LSD
-    api 'io.github.lsd-consulting:lsd-core:0.1.33'
+    api 'io.github.lsd-consulting:lsd-core:0.1.35'
     implementation 'io.github.lsd-consulting:lsd-formatting-library:1.0.1'
-    implementation 'io.github.lsd-consulting:lsd-distributed-mongodb-access:1.0.0'
+    implementation 'io.github.lsd-consulting:lsd-distributed-mongodb-access:1.0.2'
 
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
