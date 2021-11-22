@@ -34,4 +34,7 @@ lsd.dist.db.trustStorePassword={password}
 lsd.dist.db.trustStoreLocation={location}
 
 lsd.dist.db.connectionString={someUrl}
+
+# Optional
+lsd.dist.db.connectionTimeout={millis}
 ```
