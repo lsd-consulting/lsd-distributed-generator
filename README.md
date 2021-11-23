@@ -1,8 +1,13 @@
+[![semantic-release](https://img.shields.io/badge/semantic-release-e10079.svg?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+
 # lsd-distributed-generator
 ![GitHub](https://img.shields.io/github/license/lsd-consulting/lsd-distributed-generator)
-[![Build](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/macos-build.yml/badge.svg)](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/macos-build.yml)
-![Maven Central](https://img.shields.io/maven-central/v/io.github.lsd-consulting/lsd-distributed-generator)
+[![CI](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/ci.yml)
 ![Codecov](https://img.shields.io/codecov/c/github/lsd-consulting/lsd-distributed-generator)
+[![Publish](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/publish.yml/badge.svg)](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/publish.yml)
+[![Nightly Build](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/nightly.yml/badge.svg)](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/nightly.yml)
+[![GitHub release](https://img.shields.io/github/release/lsd-consulting/lsd-distributed-generator)](https://github.com/lsd-consulting/lsd-distributed-generator/releases)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.lsd-consulting/lsd-distributed-generator)
 
 A Liquid Sequence Diagram generator from data gathered by the `lsd-distributed-interceptors` library and stored in a database. 
 
