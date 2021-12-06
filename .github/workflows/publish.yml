@@ -1,7 +1,9 @@
 # This workflow will publish to Sonatype (for releasing to maven-central)
 
 name: Publish
+
 on:
+  workflow_dispatch
   release:
     types: [created]
 jobs:
