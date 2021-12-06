@@ -24,7 +24,7 @@ public class LsdLogger {
     }
 
     public void captureInteractionsFromDatabase(final Map<String, Optional<String>> traceIdToColourMap) {
-        for (var interaction : interactionGenerator.generate(traceIdToColourMap)) {
+        for (var interaction : interactionGenerator.generate(traceIdToColourMap).getEvents()) {
             lsdContext.capture(interaction);
         }
     }

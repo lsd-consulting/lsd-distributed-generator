@@ -1,5 +1,3 @@
-apply plugin: 'info.solidsoft.pitest'
-
 build.dependsOn "pitest"
 
 // perform mutation test and enforce coverage
@@ -15,7 +13,7 @@ pitest {
     excludedClasses = [ 'io.lsdconsulting.lsd.distributed.generator.config.*']
     threads = 4
     outputFormats = ['HTML']
-    coverageThreshold = 99
+    coverageThreshold = 98
     mutationThreshold = 100
     testStrengthThreshold = 100
 }

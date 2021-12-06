@@ -8,6 +8,7 @@ import io.lsdconsulting.lsd.distributed.access.model.Type;
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository;
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator;
 import io.lsdconsulting.lsd.distributed.generator.diagram.data.InteractionDataGenerator;
+import io.lsdconsulting.lsd.distributed.generator.diagram.dto.EventContainer;
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.ConsumeMessageBuilder;
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap;
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.MessageBuilder;
@@ -18,12 +19,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static io.lsdconsulting.lsd.distributed.access.model.Type.*;
+import static java.time.Instant.EPOCH;
+import static java.time.ZonedDateTime.ofInstant;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -50,7 +54,7 @@ class InteractionGeneratorIT {
     void generateInteractions(final InterceptedInteraction interceptedInteraction, final String expectedInteractionName, final String expectedBody) {
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(List.of(interceptedInteraction));
 
-        final List<SequenceEvent> result = underTest.generate(Map.of(TRACE_ID, Optional.of("[#grey]")));
+        final List<SequenceEvent> result = underTest.generate(Map.of(TRACE_ID, Optional.of("[#grey]"))).getEvents();
 
         assertThat(result, hasSize(1));
         Message sequenceEvent = (Message) result.get(0);
@@ -81,7 +85,7 @@ class InteractionGeneratorIT {
 
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(interceptedInteractions);
 
-        List<SequenceEvent> result = underTest.generate(Map.of(TRACE_ID, Optional.of("[#grey]")));
+        List<SequenceEvent> result = underTest.generate(Map.of(TRACE_ID, Optional.of("[#grey]"))).getEvents();
 
         List<String> interactions = result.stream().map(SequenceEvent::toMarkup).collect(toList());
         assertThat(interactions, hasSize(6));
@@ -95,6 +99,44 @@ class InteractionGeneratorIT {
     }
 
     @Test
+    void generateStartTimeOfCapturedFlow() {
+        ZoneId utc = ZoneId.of("UTC");
+        List<InterceptedInteraction> interceptedInteractions = List.of(
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(1)).path("/abc/def1").target("target1").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(2)).path("/abc/def2").target("target2").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(3)).target("exchange").serviceName("service").type(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(6)).target("exchange").serviceName("service").type(CONSUME).body("").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(5)).target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(25L).build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(4)).target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(35L).build()
+        );
+
+        given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(interceptedInteractions);
+
+        EventContainer result = underTest.generate(Map.of(TRACE_ID, Optional.of("[#grey]")));
+
+        assertThat(result.getStartTime(), is(ofInstant(EPOCH, utc).plusMinutes(1)));
+    }
+
+    @Test
+    void generateFinishTimeOfCapturedFlow() {
+        ZoneId utc = ZoneId.of("UTC");
+        List<InterceptedInteraction> interceptedInteractions = List.of(
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(3)).path("/abc/def1").target("target1").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(2)).path("/abc/def2").target("target2").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(1)).target("exchange").serviceName("service").type(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(4)).target("exchange").serviceName("service").type(CONSUME).body("").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(5)).target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(25L).build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(6)).target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(35L).build()
+        );
+
+        given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(interceptedInteractions);
+
+        EventContainer result = underTest.generate(Map.of(TRACE_ID, Optional.of("[#grey]")));
+
+        assertThat(result.getFinishTime(), is(ofInstant(EPOCH, utc).plusMinutes(6)));
+    }
+
+    @Test
     void generateRequestHeadersInBody() {
         InterceptedInteraction interceptedInteraction = buildInterceptedInteraction(REQUEST)
                 .requestHeaders(Map.of("header", List.of("value")))
@@ -102,7 +144,7 @@ class InteractionGeneratorIT {
 
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(List.of(interceptedInteraction));
 
-        final List<SequenceEvent> interactionNames = underTest.generate(Map.of(TRACE_ID, Optional.empty()));
+        final List<SequenceEvent> interactionNames = underTest.generate(Map.of(TRACE_ID, Optional.empty())).getEvents();
 
         String body = (String) ((Message) interactionNames.get(0)).getData();
 
@@ -118,7 +160,7 @@ class InteractionGeneratorIT {
                 .build();
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(List.of(interceptedInteraction));
 
-        final List<SequenceEvent> interactionNames = underTest.generate(Map.of(TRACE_ID, Optional.empty()));
+        final List<SequenceEvent> interactionNames = underTest.generate(Map.of(TRACE_ID, Optional.empty())).getEvents();
 
         String body = (String) ((Message) interactionNames.get(0)).getData();
 
@@ -134,7 +176,7 @@ class InteractionGeneratorIT {
                 .build();
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(List.of(interceptedInteraction));
 
-        final List<SequenceEvent> interactionNames = underTest.generate(Map.of(TRACE_ID, Optional.empty()));
+        final List<SequenceEvent> interactionNames = underTest.generate(Map.of(TRACE_ID, Optional.empty())).getEvents();
 
         String body = (String) ((Message) interactionNames.get(0)).getData();
 
