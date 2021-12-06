@@ -1,5 +1,6 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram;
 
+import com.lsd.events.SequenceEvent;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
 import io.lsdconsulting.lsd.distributed.access.model.Type;
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository;
@@ -35,17 +36,29 @@ public class InteractionGenerator {
         List<InterceptedInteraction> interactions = interceptedDocumentRepository.findByTraceIds(traceIds);
 
         return EventContainer.builder()
-                .events(interactions.stream().map(interceptedInteraction -> {
-                    String colour = ofNullable(traceIdToColourMap.get(interceptedInteraction.getTraceId())).flatMap(x -> x).orElse(NO_COLOUR);
-                    String data = prettyPrintJson(interactionDataGenerator.buildFrom(interceptedInteraction));
-                    String serviceName = interceptedInteraction.getServiceName();
-                    String target = interceptedInteraction.getTarget();
-                    Type type = interceptedInteraction.getType();
-                    String label = labelGeneratorMap.generate(interceptedInteraction);
-                    return eventBuilderMap.build(type, label, serviceName, target, colour, data);
-                }).collect(Collectors.toList()))
-                .startTime(interactions.stream().map(InterceptedInteraction::getCreatedAt).filter(Objects::nonNull).min(ZonedDateTime::compareTo).orElse(null))
-                .finishTime(interactions.stream().map(InterceptedInteraction::getCreatedAt).filter(Objects::nonNull).max(ZonedDateTime::compareTo).orElse(null))
+                .events(getEvents(traceIdToColourMap, interactions))
+                .startTime(getStartTime(interactions))
+                .finishTime(getFinishTime(interactions))
                 .build();
+    }
+
+    private ZonedDateTime getFinishTime(List<InterceptedInteraction> interactions) {
+        return interactions.stream().map(InterceptedInteraction::getCreatedAt).filter(Objects::nonNull).max(ZonedDateTime::compareTo).orElse(null);
+    }
+
+    private ZonedDateTime getStartTime(List<InterceptedInteraction> interactions) {
+        return interactions.stream().map(InterceptedInteraction::getCreatedAt).filter(Objects::nonNull).min(ZonedDateTime::compareTo).orElse(null);
+    }
+
+    private List<SequenceEvent> getEvents(Map<String, Optional<String>> traceIdToColourMap, List<InterceptedInteraction> interactions) {
+        return interactions.stream().map(interceptedInteraction -> {
+            String colour = ofNullable(traceIdToColourMap.get(interceptedInteraction.getTraceId())).flatMap(x -> x).orElse(NO_COLOUR);
+            String data = prettyPrintJson(interactionDataGenerator.buildFrom(interceptedInteraction));
+            String serviceName = interceptedInteraction.getServiceName();
+            String target = interceptedInteraction.getTarget();
+            Type type = interceptedInteraction.getType();
+            String label = labelGeneratorMap.generate(interceptedInteraction);
+            return eventBuilderMap.build(type, label, serviceName, target, colour, data);
+        }).collect(Collectors.toList());
     }
 }
