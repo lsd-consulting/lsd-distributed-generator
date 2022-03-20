@@ -31,15 +31,13 @@ To use the `lsd-distributed-generator` library just add it to the dependencies:
 implementation "io.github.lsd-consulting:lsd-distributed-generator:+"
 ```
 
-and configure through app properties:
+## Properties
 
-```properties
-# the trust store configuration is optional
-lsd.dist.db.trustStorePassword={password}
-lsd.dist.db.trustStoreLocation={location}
+The following properties can be overridden by setting System or Environment properties.
 
-lsd.dist.db.connectionString={someUrl}
-
-# Optional
-lsd.dist.db.connectionTimeout={millis}
-```
+| Property Name        | Default     | Required | Description |
+| ----------- | ----------- | ------------ | ------------ |
+| lsd.dist.db.connectionString | N/A | YES | Connection string to the database, eg. mongodb://localhost:27017 |
+| lsd.dist.db.connectionTimeout.millis | 500 | NO | Database connection timeout. |
+| lsd.dist.db.trustStoreLocation | N/A | NO | The location of the trust store containing the certificate of the signing authority (only required for TLS where the certificate if provided). |
+| lsd.dist.db.trustStorePassword | N/A | NO | The password to the trust store containing the certificate of the signing authority. |
