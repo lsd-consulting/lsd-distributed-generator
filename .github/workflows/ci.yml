@@ -17,7 +17,9 @@ jobs:
           distribution: 'adopt'
       - name: Build with Gradle
         run: ./gradlew build
-      - uses: actions/upload-artifact@v2
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v2
         with:
           name: build-directory
           path: build
