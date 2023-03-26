@@ -1,8 +1,10 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram.event;
 
-import com.lsd.IdGenerator;
-import com.lsd.events.Message;
-import com.lsd.events.SequenceEvent;
+import com.lsd.core.IdGenerator;
+import com.lsd.core.domain.ComponentName;
+import com.lsd.core.domain.Message;
+import com.lsd.core.domain.MessageType;
+import com.lsd.core.domain.SequenceEvent;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +15,13 @@ public class MessageBuilder implements SequenceEventBuilder {
 
     @Override
     public SequenceEvent build(String label, String serviceName, String target, String colour, String data) {
-        return Message.builder()
-                .id(idGenerator.next())
-                .label(label)
-                .from(serviceName)
-                .to(target)
-                .colour(colour)
-                .data(data)
-                .build();
+        return new Message(
+                idGenerator.next(),
+                new ComponentName(serviceName),
+                new ComponentName(target),
+                label,
+                MessageType.SYNCHRONOUS,
+                colour,
+                data);
     }
 }

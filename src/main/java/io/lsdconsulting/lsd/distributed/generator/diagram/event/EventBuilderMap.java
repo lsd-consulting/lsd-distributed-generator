@@ -1,6 +1,6 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram.event;
 
-import com.lsd.events.SequenceEvent;
+import com.lsd.core.domain.SequenceEvent;
 import io.lsdconsulting.lsd.distributed.access.model.Type;
 
 import java.util.HashMap;

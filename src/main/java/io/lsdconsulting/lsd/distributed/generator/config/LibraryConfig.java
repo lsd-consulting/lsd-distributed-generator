@@ -1,7 +1,7 @@
 package io.lsdconsulting.lsd.distributed.generator.config;
 
-import com.lsd.IdGenerator;
-import com.lsd.LsdContext;
+import com.lsd.core.IdGenerator;
+import com.lsd.core.LsdContext;
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository;
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator;
 import io.lsdconsulting.lsd.distributed.generator.diagram.LsdLogger;

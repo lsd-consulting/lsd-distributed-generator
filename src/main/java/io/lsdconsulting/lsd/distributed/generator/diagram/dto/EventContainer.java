@@ -1,6 +1,6 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram.dto;
 
-import com.lsd.events.SequenceEvent;
+import com.lsd.core.domain.SequenceEvent;
 import lombok.Builder;
 import lombok.Value;
 

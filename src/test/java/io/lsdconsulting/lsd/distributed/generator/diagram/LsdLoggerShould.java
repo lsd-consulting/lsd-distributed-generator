@@ -1,7 +1,9 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram;
 
-import com.lsd.LsdContext;
-import com.lsd.events.Message;
+import com.lsd.core.LsdContext;
+import com.lsd.core.domain.ComponentName;
+import com.lsd.core.domain.Message;
+import com.lsd.core.domain.MessageType;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository;
 import io.lsdconsulting.lsd.distributed.generator.diagram.dto.EventContainer;
@@ -32,7 +34,14 @@ public class LsdLoggerShould {
     public void captureInteractionName() {
         final InterceptedInteraction interceptedInteraction = InterceptedInteraction.builder().build();
         given(interceptedDocumentRepository.findByTraceIds(traceId)).willReturn(singletonList(interceptedInteraction));
-        Message message = Message.builder().label("interactionName").data("body").build();
+        Message message = new Message(
+                "",
+                new ComponentName(""),
+                new ComponentName(""),
+                "interactionName",
+                MessageType.SYNCHRONOUS,
+                "",
+                "body");
         given(interactionGenerator.generate(any())).willReturn(EventContainer.builder().events(singletonList(message)).build());
 
         underTest.captureInteractionsFromDatabase(traceId);
@@ -47,7 +56,14 @@ public class LsdLoggerShould {
         final InterceptedInteraction interceptedInteraction2 = InterceptedInteraction.builder().build();
         given(interceptedDocumentRepository.findByTraceIds(traceId)).willReturn(singletonList(interceptedInteraction1));
         given(interceptedDocumentRepository.findByTraceIds(secondaryTraceId)).willReturn(singletonList(interceptedInteraction2));
-        Message message = Message.builder().label("interactionName").data("body").build();
+        Message message = new Message(
+                "",
+                new ComponentName(""),
+                new ComponentName(""),
+                "interactionName",
+                MessageType.SYNCHRONOUS,
+                "",
+                "body");
         given(interactionGenerator.generate(any())).willReturn(EventContainer.builder().events(List.of(message, message)).build());
 
         underTest.captureInteractionsFromDatabase(Map.of(traceId, Optional.of("red"), secondaryTraceId, Optional.of("green")));

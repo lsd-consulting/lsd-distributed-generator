@@ -1,6 +1,6 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram;
 
-import com.lsd.LsdContext;
+import com.lsd.core.LsdContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,8 +1,8 @@
 package io.lsdconsulting.lsd.distributed.generator.integration;
 
-import com.lsd.IdGenerator;
-import com.lsd.events.Message;
-import com.lsd.events.SequenceEvent;
+import com.lsd.core.IdGenerator;
+import com.lsd.core.domain.Message;
+import com.lsd.core.domain.SequenceEvent;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
 import io.lsdconsulting.lsd.distributed.access.model.Type;
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository;

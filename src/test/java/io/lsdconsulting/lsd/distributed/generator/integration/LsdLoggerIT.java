@@ -1,7 +1,7 @@
 package io.lsdconsulting.lsd.distributed.generator.integration;
 
-import com.lsd.LsdContext;
-import com.lsd.events.SequenceEvent;
+import com.lsd.core.LsdContext;
+import com.lsd.core.domain.SequenceEvent;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator;
 import io.lsdconsulting.lsd.distributed.generator.diagram.LsdLogger;
