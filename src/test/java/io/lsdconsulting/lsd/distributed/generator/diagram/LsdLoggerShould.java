@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.lsd.core.builders.MessageBuilder.messageBuilder;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,7 +24,7 @@ public class LsdLoggerShould {
 
     private final InterceptedDocumentRepository interceptedDocumentRepository = mock(InterceptedDocumentRepository.class);
     private final InteractionGenerator interactionGenerator = mock(InteractionGenerator.class);
-    private final LsdContext lsdContext = mock(LsdContext.class);
+    private final LsdContext lsdContext = spy(LsdContext.class);
 
     private final String traceId = randomAlphanumeric(8);
     private final String secondaryTraceId = randomAlphanumeric(8);
@@ -34,14 +35,7 @@ public class LsdLoggerShould {
     public void captureInteractionName() {
         final InterceptedInteraction interceptedInteraction = InterceptedInteraction.builder().build();
         given(interceptedDocumentRepository.findByTraceIds(traceId)).willReturn(singletonList(interceptedInteraction));
-        Message message = new Message(
-                "",
-                new ComponentName(""),
-                new ComponentName(""),
-                "interactionName",
-                MessageType.SYNCHRONOUS,
-                "",
-                "body");
+        Message message = messageBuilder().label("interactionName").data("body").build();
         given(interactionGenerator.generate(any())).willReturn(EventContainer.builder().events(singletonList(message)).build());
 
         underTest.captureInteractionsFromDatabase(traceId);
@@ -56,14 +50,7 @@ public class LsdLoggerShould {
         final InterceptedInteraction interceptedInteraction2 = InterceptedInteraction.builder().build();
         given(interceptedDocumentRepository.findByTraceIds(traceId)).willReturn(singletonList(interceptedInteraction1));
         given(interceptedDocumentRepository.findByTraceIds(secondaryTraceId)).willReturn(singletonList(interceptedInteraction2));
-        Message message = new Message(
-                "",
-                new ComponentName(""),
-                new ComponentName(""),
-                "interactionName",
-                MessageType.SYNCHRONOUS,
-                "",
-                "body");
+        Message message = messageBuilder().label("interactionName").data("body").build();
         given(interactionGenerator.generate(any())).willReturn(EventContainer.builder().events(List.of(message, message)).build());
 
         underTest.captureInteractionsFromDatabase(Map.of(traceId, Optional.of("red"), secondaryTraceId, Optional.of("green")));

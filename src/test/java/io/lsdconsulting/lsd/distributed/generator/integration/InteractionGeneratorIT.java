@@ -1,6 +1,7 @@
 package io.lsdconsulting.lsd.distributed.generator.integration;
 
 import com.lsd.core.IdGenerator;
+import com.lsd.core.adapter.puml.SequenceDiagramMarkupKt;
 import com.lsd.core.domain.Message;
 import com.lsd.core.domain.SequenceEvent;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.lsd.core.adapter.puml.SequenceDiagramMarkupKt.toPumlMarkup;
 import static io.lsdconsulting.lsd.distributed.access.model.Type.*;
 import static java.time.Instant.EPOCH;
 import static java.time.ZonedDateTime.ofInstant;
@@ -47,28 +49,28 @@ class InteractionGeneratorIT {
     private final LabelGeneratorMap labelGeneratorMap = new LabelGeneratorMap();
     private final InteractionDataGenerator interactionDataGenerator = new InteractionDataGenerator();
 
-    private final InteractionGenerator underTest = new InteractionGenerator(interceptedDocumentRepository,eventBuilderMap, labelGeneratorMap, interactionDataGenerator);
+    private final InteractionGenerator underTest = new InteractionGenerator(interceptedDocumentRepository, eventBuilderMap, labelGeneratorMap, interactionDataGenerator);
 
     @ParameterizedTest
     @MethodSource("provideInterceptedInteractions")
     void generateInteractions(final InterceptedInteraction interceptedInteraction, final String expectedInteractionName, final String expectedBody) {
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(List.of(interceptedInteraction));
 
-        final List<SequenceEvent> result = underTest.generate(Map.of(TRACE_ID, Optional.of("[#grey]"))).getEvents();
+        final List<SequenceEvent> result = underTest.generate(Map.of(TRACE_ID, Optional.of("grey"))).getEvents();
 
         assertThat(result, hasSize(1));
         Message sequenceEvent = (Message) result.get(0);
         assertThat(sequenceEvent.getData(), is(expectedBody));
-        assertThat(sequenceEvent.toMarkup(), is(expectedInteractionName));
+        assertThat(toPumlMarkup(sequenceEvent), is(expectedInteractionName));
     }
 
     private static Stream<Arguments> provideInterceptedInteractions() {
         return Stream.of(
-                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def").target("target").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(), "Service -[#[#grey]]> Target: <text fill=\"[#grey]\">[[#1 {POST /abc/def} POST /abc/def]]</text>", "{\n  \"body\": \"key1=value1;key2=value2\"\n}"),
-                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def").target("target").serviceName("service").type(REQUEST).httpMethod("POST").body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(), "Service -[#[#grey]]> Target: <text fill=\"[#grey]\">[[#1 {POST /abc/def} POST /abc/def]]</text>", "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"),
-                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/defghi").target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(2L).build(), "Target --[#[#grey]]>> Service: <text fill=\"[#grey]\">[[#1 {sync 200 response (2 ms)} sync 200 response (2 ms)]]</text>", "{\n  \"body\": \"someValue\"\n}"),
-                of(InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").type(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(), "Service -[#[#grey]]> Exchange: <text fill=\"[#grey]\">[[#1 {publish event} publish event]]</text>", "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"),
-                of(InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").type(CONSUME).body("").build(), "Exchange -[#[#grey]]> Service: <text fill=\"[#grey]\">[[#1 {consume message} consume message]]</text>", "{\n  \"body\": \"\"\n}")
+                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def").target("target").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(), "Service -[#grey]> Target: <text fill=\"grey\">[[#1 {POST /abc/def} POST /abc/def]]</text>", "{\n  \"body\": \"key1=value1;key2=value2\"\n}"),
+                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def").target("target").serviceName("service").type(REQUEST).httpMethod("POST").body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(), "Service -[#grey]> Target: <text fill=\"grey\">[[#1 {POST /abc/def} POST /abc/def]]</text>", "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"),
+                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/defghi").target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(2L).build(), "Target --[#grey]> Service: <text fill=\"grey\">[[#1 {sync 200 response (2 ms)} sync 200 response (2 ms)]]</text>", "{\n  \"body\": \"someValue\"\n}"),
+                of(InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").type(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(), "Service -[#grey]> Exchange: <text fill=\"grey\">[[#1 {publish event} publish event]]</text>", "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"),
+                of(InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").type(CONSUME).body("").build(), "Exchange -[#grey]> Service: <text fill=\"grey\">[[#1 {consume message} consume message]]</text>", "{\n  \"body\": \"\"\n}")
         );
     }
 
@@ -87,7 +89,7 @@ class InteractionGeneratorIT {
 
         List<SequenceEvent> result = underTest.generate(Map.of(TRACE_ID, Optional.of("[#grey]"))).getEvents();
 
-        List<String> interactions = result.stream().map(SequenceEvent::toMarkup).collect(toList());
+        List<String> interactions = result.stream().map(SequenceDiagramMarkupKt::toPumlMarkup).collect(toList());
         assertThat(interactions, hasSize(6));
         assertThat(interactions, hasItems(
                 not(containsString("ms)")),

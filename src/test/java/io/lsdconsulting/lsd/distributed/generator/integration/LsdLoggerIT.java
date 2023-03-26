@@ -1,6 +1,7 @@
 package io.lsdconsulting.lsd.distributed.generator.integration;
 
 import com.lsd.core.LsdContext;
+import com.lsd.core.domain.ComponentName;
 import com.lsd.core.domain.SequenceEvent;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator;
@@ -27,8 +28,7 @@ import static io.lsdconsulting.lsd.distributed.generator.integration.testapp.rep
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @Slf4j
@@ -50,7 +50,7 @@ public class LsdLoggerIT {
 
     private final LsdContext realContext = new LsdContext();
     private final LsdContext lsdContext = spy(realContext);
-    private final ArgumentCaptor<SequenceEvent> argumentCaptor = ArgumentCaptor.forClass(SequenceEvent.class);
+    private final ArgumentCaptor<SequenceEvent> eventCaptor = ArgumentCaptor.forClass(SequenceEvent.class);
 
     private LsdLogger lsdLogger;
 
@@ -66,7 +66,6 @@ public class LsdLoggerIT {
 
     @Test
     void shouldLogInteractionsInLsdContextWithSuppliedMultipleTraceIds() {
-
         testRepository.save(InterceptedInteraction.builder()
                 .traceId(mainTraceId)
                 .httpMethod("GET")
@@ -112,47 +111,47 @@ public class LsdLoggerIT {
                 .httpStatus("200 OK")
                 .build());
 
-        doNothing().when(lsdContext).capture(argumentCaptor.capture());
+        lsdLogger.captureInteractionsFromDatabase(Map.of(mainTraceId, Optional.of("blue"), setupTraceId, Optional.of("green")));
+        
+        verify(lsdContext, times(6)).capture(eventCaptor.capture());
 
-        lsdLogger.captureInteractionsFromDatabase(Map.of(mainTraceId, Optional.of("[#blue]"), setupTraceId, Optional.of("[#green]")));
-
-        List<SequenceEvent> capturedValues = argumentCaptor.getAllValues();
+        List<SequenceEvent> capturedValues = eventCaptor.getAllValues();
         assertThat(capturedValues, hasSize(6));
         assertThat(capturedValues.get(0), allOf(
                 hasProperty("label", is("GET /api-listener?message=from_test")),
-                hasProperty("from", is(sourceName)),
-                hasProperty("to", is(targetName)),
-                hasProperty("colour", is("[#blue]"))
+                hasProperty("from", is(new ComponentName(sourceName))),
+                hasProperty("to", is(new ComponentName(targetName))),
+                hasProperty("colour", is("blue"))
         ));
         assertThat(capturedValues.get(1), allOf(
                 hasProperty("label", is("publish event")),
-                hasProperty("from", is("TestApp")),
-                hasProperty("to", is("SomethingDoneEvent")),
-                hasProperty("colour", is("[#green]"))
+                hasProperty("from", is(new ComponentName("TestApp"))),
+                hasProperty("to", is(new ComponentName("SomethingDoneEvent"))),
+                hasProperty("colour", is("green"))
         ));
         assertThat(capturedValues.get(2), allOf(
                 hasProperty("label", is("sync 200 OK response (10 ms)")),
-                hasProperty("from", is(targetName)),
-                hasProperty("to", is(sourceName)),
-                hasProperty("colour", is("[#blue]"))
+                hasProperty("from", is(new ComponentName(targetName))),
+                hasProperty("to", is(new ComponentName(sourceName))),
+                hasProperty("colour", is("blue"))
         ));
         assertThat(capturedValues, hasItem(allOf(
                 hasProperty("label", is("consume message")),
-                hasProperty("from", is("SomethingDoneEvent")),
-                hasProperty("to", is("TestApp")),
-                hasProperty("colour", is("[#green]"))
+                hasProperty("from", is(new ComponentName("SomethingDoneEvent"))),
+                hasProperty("to", is(new ComponentName("TestApp"))),
+                hasProperty("colour", is("green"))
         )));
         assertThat(capturedValues, hasItem(allOf(
                 hasProperty("label", is("POST /external-api?message=from_feign")),
-                hasProperty("from", is("TestApp")),
-                hasProperty("to", is("UNKNOWN_TARGET")),
-                hasProperty("colour", is("[#blue]"))
+                hasProperty("from", is(new ComponentName("TestApp"))),
+                hasProperty("to", is(new ComponentName("UNKNOWN_TARGET"))),
+                hasProperty("colour", is("blue"))
         )));
         assertThat(capturedValues, hasItem(allOf(
                 hasProperty("label", is("sync 200 OK response (20 ms)")),
-                hasProperty("from", is("UNKNOWN_TARGET")),
-                hasProperty("to", is("TestApp")),
-                hasProperty("colour", is("[#blue]"))
+                hasProperty("from", is(new ComponentName("UNKNOWN_TARGET"))),
+                hasProperty("to", is(new ComponentName("TestApp"))),
+                hasProperty("colour", is("blue"))
         )));
     }
 }
