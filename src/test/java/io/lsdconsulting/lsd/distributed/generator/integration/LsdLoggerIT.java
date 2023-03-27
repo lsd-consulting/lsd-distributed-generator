@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.lsdconsulting.lsd.distributed.access.model.Type.*;
+import static io.lsdconsulting.lsd.distributed.access.model.InteractionType.*;
 import static io.lsdconsulting.lsd.distributed.generator.integration.testapp.repository.TestRepository.tearDownDatabase;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -72,19 +72,19 @@ public class LsdLoggerIT {
                 .path("/api-listener?message=from_test")
                 .serviceName(sourceName)
                 .target(targetName)
-                .type(REQUEST)
+                .interactionType(REQUEST)
                 .build());
         testRepository.save(InterceptedInteraction.builder()
                 .traceId(setupTraceId)
                 .target("SomethingDoneEvent")
                 .serviceName("TestApp")
-                .type(PUBLISH)
+                .interactionType(PUBLISH)
                 .build());
         testRepository.save(InterceptedInteraction.builder()
                 .traceId(mainTraceId)
                 .serviceName(sourceName)
                 .target(targetName)
-                .type(RESPONSE)
+                .interactionType(RESPONSE)
                 .elapsedTime(10L)
                 .httpStatus("200 OK")
                 .build());
@@ -92,7 +92,7 @@ public class LsdLoggerIT {
                 .traceId(setupTraceId)
                 .serviceName("TestApp")
                 .target("SomethingDoneEvent")
-                .type(CONSUME)
+                .interactionType(CONSUME)
                 .build());
         testRepository.save(InterceptedInteraction.builder()
                 .traceId(mainTraceId)
@@ -100,13 +100,13 @@ public class LsdLoggerIT {
                 .path("/external-api?message=from_feign")
                 .serviceName("TestApp")
                 .target("UNKNOWN_TARGET")
-                .type(REQUEST)
+                .interactionType(REQUEST)
                 .build());
         testRepository.save(InterceptedInteraction.builder()
                 .traceId(mainTraceId)
                 .serviceName("TestApp")
                 .target("UNKNOWN_TARGET")
-                .type(RESPONSE)
+                .interactionType(RESPONSE)
                 .elapsedTime(20L)
                 .httpStatus("200 OK")
                 .build());

@@ -3,7 +3,7 @@ package io.lsdconsulting.lsd.distributed.generator.diagram.label;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
 import org.junit.jupiter.api.Test;
 
-import static io.lsdconsulting.lsd.distributed.access.model.Type.*;
+import static io.lsdconsulting.lsd.distributed.access.model.InteractionType.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -14,7 +14,7 @@ class LabelGeneratorMapShould {
     @Test
     void generateRequestLabel() {
         InterceptedInteraction interaction = InterceptedInteraction.builder()
-                .type(REQUEST)
+                .interactionType(REQUEST)
                 .httpMethod("GET")
                 .path("path")
                 .build();
@@ -27,7 +27,7 @@ class LabelGeneratorMapShould {
     @Test
     void generateResponseLabel() {
         InterceptedInteraction interaction = InterceptedInteraction.builder()
-                .type(RESPONSE)
+                .interactionType(RESPONSE)
                 .httpStatus("OK")
                 .elapsedTime(20L)
                 .build();
@@ -39,7 +39,7 @@ class LabelGeneratorMapShould {
 
     @Test
     void generatePublishLabel() {
-        InterceptedInteraction interaction = InterceptedInteraction.builder().type(PUBLISH).build();
+        InterceptedInteraction interaction = InterceptedInteraction.builder().interactionType(PUBLISH).build();
 
         String result = labelGeneratorMap.generate(interaction);
 
@@ -48,7 +48,7 @@ class LabelGeneratorMapShould {
 
     @Test
     void generateConsumeLabel() {
-        InterceptedInteraction interaction = InterceptedInteraction.builder().type(CONSUME).build();
+        InterceptedInteraction interaction = InterceptedInteraction.builder().interactionType(CONSUME).build();
 
         String result = labelGeneratorMap.generate(interaction);
 

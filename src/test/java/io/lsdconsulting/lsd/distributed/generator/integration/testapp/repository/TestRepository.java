@@ -80,7 +80,7 @@ public class TestRepository {
                 .append("path", interceptedInteraction.getPath())
                 .append("httpStatus", interceptedInteraction.getHttpStatus())
                 .append("httpMethod", interceptedInteraction.getHttpMethod())
-                .append("type", interceptedInteraction.getType())
+                .append("interactionType", interceptedInteraction.getInteractionType())
                 .append("profile", interceptedInteraction.getProfile())
                 .append("elapsedTime", interceptedInteraction.getElapsedTime())
                 .append("createdAt", interceptedInteraction.getCreatedAt());

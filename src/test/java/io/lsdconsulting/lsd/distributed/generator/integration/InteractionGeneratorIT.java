@@ -4,8 +4,8 @@ import com.lsd.core.IdGenerator;
 import com.lsd.core.adapter.puml.SequenceDiagramMarkupKt;
 import com.lsd.core.domain.Message;
 import com.lsd.core.domain.SequenceEvent;
+import io.lsdconsulting.lsd.distributed.access.model.InteractionType;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
-import io.lsdconsulting.lsd.distributed.access.model.Type;
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository;
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator;
 import io.lsdconsulting.lsd.distributed.generator.diagram.data.InteractionDataGenerator;
@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.lsd.core.adapter.puml.SequenceDiagramMarkupKt.toPumlMarkup;
-import static io.lsdconsulting.lsd.distributed.access.model.Type.*;
+import static io.lsdconsulting.lsd.distributed.access.model.InteractionType.*;
 import static java.time.Instant.EPOCH;
 import static java.time.ZonedDateTime.ofInstant;
 import static java.util.stream.Collectors.toList;
@@ -66,23 +66,23 @@ class InteractionGeneratorIT {
 
     private static Stream<Arguments> provideInterceptedInteractions() {
         return Stream.of(
-                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def").target("target").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(), "Service -[#grey]> Target: <text fill=\"grey\">[[#1 {POST /abc/def} POST /abc/def]]</text>", "{\n  \"body\": \"key1=value1;key2=value2\"\n}"),
-                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def").target("target").serviceName("service").type(REQUEST).httpMethod("POST").body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(), "Service -[#grey]> Target: <text fill=\"grey\">[[#1 {POST /abc/def} POST /abc/def]]</text>", "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"),
-                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/defghi").target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(2L).build(), "Target --[#grey]> Service: <text fill=\"grey\">[[#1 {sync 200 response (2 ms)} sync 200 response (2 ms)]]</text>", "{\n  \"body\": \"someValue\"\n}"),
-                of(InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").type(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(), "Service -[#grey]> Exchange: <text fill=\"grey\">[[#1 {publish event} publish event]]</text>", "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"),
-                of(InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").type(CONSUME).body("").build(), "Exchange -[#grey]> Service: <text fill=\"grey\">[[#1 {consume message} consume message]]</text>", "{\n  \"body\": \"\"\n}")
+                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def").target("target").serviceName("service").interactionType(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(), "Service -[#grey]> Target: <text fill=\"grey\">[[#1 {POST /abc/def} POST /abc/def]]</text>", "{\n  \"body\": \"key1=value1;key2=value2\"\n}"),
+                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def").target("target").serviceName("service").interactionType(REQUEST).httpMethod("POST").body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(), "Service -[#grey]> Target: <text fill=\"grey\">[[#1 {POST /abc/def} POST /abc/def]]</text>", "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"),
+                of(InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/defghi").target("target").serviceName("service").interactionType(RESPONSE).httpStatus("200").body("someValue").elapsedTime(2L).build(), "Target --[#grey]> Service: <text fill=\"grey\">[[#1 {sync 200 response (2 ms)} sync 200 response (2 ms)]]</text>", "{\n  \"body\": \"someValue\"\n}"),
+                of(InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").interactionType(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(), "Service -[#grey]> Exchange: <text fill=\"grey\">[[#1 {publish event} publish event]]</text>", "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"),
+                of(InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").interactionType(CONSUME).body("").build(), "Exchange -[#grey]> Service: <text fill=\"grey\">[[#1 {consume message} consume message]]</text>", "{\n  \"body\": \"\"\n}")
         );
     }
 
     @Test
     void attachTimingToCorrectSynchronousResponses() {
         List<InterceptedInteraction> interceptedInteractions = List.of(
-                InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def1").target("target1").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def2").target("target2").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").type(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").type(CONSUME).body("").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(25L).build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(35L).build()
+                InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def1").target("target1").serviceName("service").interactionType(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).path("/abc/def2").target("target2").serviceName("service").interactionType(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").interactionType(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).target("exchange").serviceName("service").interactionType(CONSUME).body("").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).target("target").serviceName("service").interactionType(RESPONSE).httpStatus("200").body("someValue").elapsedTime(25L).build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).target("target").serviceName("service").interactionType(RESPONSE).httpStatus("200").body("someValue").elapsedTime(35L).build()
         );
 
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(interceptedInteractions);
@@ -104,12 +104,12 @@ class InteractionGeneratorIT {
     void generateStartTimeOfCapturedFlow() {
         ZoneId utc = ZoneId.of("UTC");
         List<InterceptedInteraction> interceptedInteractions = List.of(
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(1)).path("/abc/def1").target("target1").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(2)).path("/abc/def2").target("target2").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(3)).target("exchange").serviceName("service").type(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(6)).target("exchange").serviceName("service").type(CONSUME).body("").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(5)).target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(25L).build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(4)).target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(35L).build()
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(1)).path("/abc/def1").target("target1").serviceName("service").interactionType(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(2)).path("/abc/def2").target("target2").serviceName("service").interactionType(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(3)).target("exchange").serviceName("service").interactionType(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(6)).target("exchange").serviceName("service").interactionType(CONSUME).body("").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(5)).target("target").serviceName("service").interactionType(RESPONSE).httpStatus("200").body("someValue").elapsedTime(25L).build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(4)).target("target").serviceName("service").interactionType(RESPONSE).httpStatus("200").body("someValue").elapsedTime(35L).build()
         );
 
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(interceptedInteractions);
@@ -123,12 +123,12 @@ class InteractionGeneratorIT {
     void generateFinishTimeOfCapturedFlow() {
         ZoneId utc = ZoneId.of("UTC");
         List<InterceptedInteraction> interceptedInteractions = List.of(
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(3)).path("/abc/def1").target("target1").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(2)).path("/abc/def2").target("target2").serviceName("service").type(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(1)).target("exchange").serviceName("service").type(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(4)).target("exchange").serviceName("service").type(CONSUME).body("").build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(5)).target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(25L).build(),
-                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(6)).target("target").serviceName("service").type(RESPONSE).httpStatus("200").body("someValue").elapsedTime(35L).build()
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(3)).path("/abc/def1").target("target1").serviceName("service").interactionType(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(2)).path("/abc/def2").target("target2").serviceName("service").interactionType(REQUEST).httpMethod("POST").body("key1=value1;key2=value2").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(1)).target("exchange").serviceName("service").interactionType(PUBLISH).body("{\"key1\":\"value1\",\"key2\":\"value2\"}").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(4)).target("exchange").serviceName("service").interactionType(CONSUME).body("").build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(5)).target("target").serviceName("service").interactionType(RESPONSE).httpStatus("200").body("someValue").elapsedTime(25L).build(),
+                InterceptedInteraction.builder().traceId(TRACE_ID).createdAt(ofInstant(EPOCH, utc).plusMinutes(6)).target("target").serviceName("service").interactionType(RESPONSE).httpStatus("200").body("someValue").elapsedTime(35L).build()
         );
 
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(interceptedInteractions);
@@ -187,10 +187,10 @@ class InteractionGeneratorIT {
         assertThat(body, not(containsString("requestHeaders")));
     }
 
-    private InterceptedInteraction.InterceptedInteractionBuilder buildInterceptedInteraction(Type type) {
+    private InterceptedInteraction.InterceptedInteractionBuilder buildInterceptedInteraction(InteractionType type) {
         return InterceptedInteraction.builder()
                 .traceId(TRACE_ID)
-                .type(type)
+                .interactionType(type)
                 .target("target")
                 .serviceName("service");
     }

@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static io.lsdconsulting.lsd.distributed.access.model.Type.*;
+import static io.lsdconsulting.lsd.distributed.access.model.InteractionType.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -20,7 +20,7 @@ class InteractionDataGeneratorShould {
     void buildWithRequestHeadersOnly() {
         Map<String, Collection<String>> requestHeaders = Map.of("name", List.of("value"));
         InterceptedInteraction interaction = InterceptedInteraction.builder()
-                .type(REQUEST)
+                .interactionType(REQUEST)
                 .requestHeaders(requestHeaders)
                 .responseHeaders(Map.of("name1", List.of("value2")))
                 .body("someBody")
@@ -38,7 +38,7 @@ class InteractionDataGeneratorShould {
     void buildWithResponseHeadersOnly() {
         Map<String, Collection<String>> responseHeaders = Map.of("name", List.of("value"));
         InterceptedInteraction interaction = InterceptedInteraction.builder()
-                .type(RESPONSE)
+                .interactionType(RESPONSE)
                 .requestHeaders(Map.of("name1", List.of("value2")))
                 .responseHeaders(responseHeaders)
                 .body("someBody")
@@ -56,7 +56,7 @@ class InteractionDataGeneratorShould {
     void buildWithHeadersOnly() {
         Map<String, Collection<String>> headers = Map.of("name", List.of("value"));
         InterceptedInteraction interaction = InterceptedInteraction.builder()
-                .type(PUBLISH)
+                .interactionType(PUBLISH)
                 .requestHeaders(headers)
                 .responseHeaders(Map.of("name1", List.of("value2")))
                 .body("someBody")

@@ -1,8 +1,8 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram;
 
 import com.lsd.core.domain.SequenceEvent;
+import io.lsdconsulting.lsd.distributed.access.model.InteractionType;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
-import io.lsdconsulting.lsd.distributed.access.model.Type;
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository;
 import io.lsdconsulting.lsd.distributed.generator.diagram.data.InteractionDataGenerator;
 import io.lsdconsulting.lsd.distributed.generator.diagram.dto.EventContainer;
@@ -56,7 +56,7 @@ public class InteractionGenerator {
             String data = prettyPrintJson(interactionDataGenerator.buildFrom(interceptedInteraction));
             String serviceName = interceptedInteraction.getServiceName();
             String target = interceptedInteraction.getTarget();
-            Type type = interceptedInteraction.getType();
+            InteractionType type = interceptedInteraction.getInteractionType();
             String label = labelGeneratorMap.generate(interceptedInteraction);
             return eventBuilderMap.build(type, label, serviceName, target, colour, data);
         }).collect(Collectors.toList());

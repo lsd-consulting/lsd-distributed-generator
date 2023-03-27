@@ -1,15 +1,15 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram.event;
 
 import com.lsd.core.domain.SequenceEvent;
-import io.lsdconsulting.lsd.distributed.access.model.Type;
+import io.lsdconsulting.lsd.distributed.access.model.InteractionType;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.lsdconsulting.lsd.distributed.access.model.Type.*;
+import static io.lsdconsulting.lsd.distributed.access.model.InteractionType.*;
 
 public class EventBuilderMap {
-    private final Map<Type, QuintFunction<String, String, String, String, String, SequenceEvent>> eventBuilders = new HashMap<>();
+    private final Map<InteractionType, QuintFunction<String, String, String, String, String, SequenceEvent>> eventBuilders = new HashMap<>();
 
     public EventBuilderMap(MessageBuilder messageBuilder, SynchronousResponseBuilder synchronousResponseBuilder, ConsumeMessageBuilder consumeMessageBuilder) {
         eventBuilders.put(RESPONSE, synchronousResponseBuilder::build);
@@ -18,7 +18,7 @@ public class EventBuilderMap {
         eventBuilders.put(CONSUME, consumeMessageBuilder::build);
     }
 
-    public SequenceEvent build(Type type, String label, String serviceName, String target, String colour, String data) {
+    public SequenceEvent build(InteractionType type, String label, String serviceName, String target, String colour, String data) {
         return eventBuilders.get(type).apply(label, serviceName, target, colour, data);
     }
 }

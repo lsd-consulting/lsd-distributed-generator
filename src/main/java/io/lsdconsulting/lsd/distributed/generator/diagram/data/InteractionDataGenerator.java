@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
-import static io.lsdconsulting.lsd.distributed.access.model.Type.*;
+import static io.lsdconsulting.lsd.distributed.access.model.InteractionType.*;
 
 public class InteractionDataGenerator {
 
     public InteractionData buildFrom(InterceptedInteraction interceptedInteraction) {
         return InteractionData.builder()
-                .requestHeaders(interceptedInteraction.getType().equals(REQUEST) ? interceptedInteraction.getRequestHeaders() : null)
-                .responseHeaders(interceptedInteraction.getType().equals(RESPONSE) ? interceptedInteraction.getResponseHeaders() : null)
-                .headers(List.of(PUBLISH, CONSUME).contains(interceptedInteraction.getType()) ? interceptedInteraction.getRequestHeaders() : null)
+                .requestHeaders(interceptedInteraction.getInteractionType().equals(REQUEST) ? interceptedInteraction.getRequestHeaders() : null)
+                .responseHeaders(interceptedInteraction.getInteractionType().equals(RESPONSE) ? interceptedInteraction.getResponseHeaders() : null)
+                .headers(List.of(PUBLISH, CONSUME).contains(interceptedInteraction.getInteractionType()) ? interceptedInteraction.getRequestHeaders() : null)
                 .body(generateBody(interceptedInteraction.getBody()))
                 .build();
     }
