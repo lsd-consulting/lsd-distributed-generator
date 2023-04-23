@@ -3,16 +3,11 @@ dependencies {
     // Spring
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // Lombok
-    testCompileOnly 'org.projectlombok:lombok:1.18.26'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
-
     // Others
     testImplementation 'org.junit.platform:junit-platform-commons:1.9.2'
-    testImplementation 'org.mockito:mockito-core:3.12.4'
-    testImplementation 'org.mockito:mockito-junit-jupiter:3.12.4'
+    testImplementation 'io.mockk:mockk:1.13.5'
     testImplementation 'org.pitest:pitest-junit5-plugin:0.15'
-    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.0.0'
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.5.4'
 }
 
 test {
@@ -29,3 +24,5 @@ test {
         }
     }
 }
+
+compileTestKotlin.kotlinOptions.jvmTarget = "17"
