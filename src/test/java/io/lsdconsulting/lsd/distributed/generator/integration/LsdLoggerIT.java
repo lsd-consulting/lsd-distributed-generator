@@ -1,7 +1,6 @@
 package io.lsdconsulting.lsd.distributed.generator.integration;
 
 import com.lsd.core.LsdContext;
-import com.lsd.core.domain.ComponentName;
 import com.lsd.core.domain.SequenceEvent;
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction;
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator;
@@ -23,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.lsd.core.domain.ParticipantType.PARTICIPANT;
 import static io.lsdconsulting.lsd.distributed.access.model.InteractionType.*;
 import static io.lsdconsulting.lsd.distributed.generator.integration.testapp.repository.TestRepository.tearDownDatabase;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
@@ -112,45 +112,45 @@ public class LsdLoggerIT {
                 .build());
 
         lsdLogger.captureInteractionsFromDatabase(Map.of(mainTraceId, Optional.of("blue"), setupTraceId, Optional.of("green")));
-        
+
         verify(lsdContext, times(6)).capture(eventCaptor.capture());
 
         List<SequenceEvent> capturedValues = eventCaptor.getAllValues();
         assertThat(capturedValues, hasSize(6));
         assertThat(capturedValues.get(0), allOf(
                 hasProperty("label", is("GET /api-listener?message=from_test")),
-                hasProperty("from", is(new ComponentName(sourceName))),
-                hasProperty("to", is(new ComponentName(targetName))),
+                hasProperty("from", is(PARTICIPANT.called(sourceName))),
+                hasProperty("to", is(PARTICIPANT.called(targetName))),
                 hasProperty("colour", is("blue"))
         ));
         assertThat(capturedValues.get(1), allOf(
                 hasProperty("label", is("publish event")),
-                hasProperty("from", is(new ComponentName("TestApp"))),
-                hasProperty("to", is(new ComponentName("SomethingDoneEvent"))),
+                hasProperty("from", is(PARTICIPANT.called("TestApp"))),
+                hasProperty("to", is(PARTICIPANT.called("SomethingDoneEvent"))),
                 hasProperty("colour", is("green"))
         ));
         assertThat(capturedValues.get(2), allOf(
                 hasProperty("label", is("sync 200 OK response (10 ms)")),
-                hasProperty("from", is(new ComponentName(targetName))),
-                hasProperty("to", is(new ComponentName(sourceName))),
+                hasProperty("from", is(PARTICIPANT.called(targetName))),
+                hasProperty("to", is(PARTICIPANT.called(sourceName))),
                 hasProperty("colour", is("blue"))
         ));
         assertThat(capturedValues, hasItem(allOf(
                 hasProperty("label", is("consume message")),
-                hasProperty("from", is(new ComponentName("SomethingDoneEvent"))),
-                hasProperty("to", is(new ComponentName("TestApp"))),
+                hasProperty("from", is(PARTICIPANT.called("SomethingDoneEvent"))),
+                hasProperty("to", is(PARTICIPANT.called("TestApp"))),
                 hasProperty("colour", is("green"))
         )));
         assertThat(capturedValues, hasItem(allOf(
                 hasProperty("label", is("POST /external-api?message=from_feign")),
-                hasProperty("from", is(new ComponentName("TestApp"))),
-                hasProperty("to", is(new ComponentName("UNKNOWN_TARGET"))),
+                hasProperty("from", is(PARTICIPANT.called("TestApp"))),
+                hasProperty("to", is(PARTICIPANT.called("UNKNOWN_TARGET"))),
                 hasProperty("colour", is("blue"))
         )));
         assertThat(capturedValues, hasItem(allOf(
                 hasProperty("label", is("sync 200 OK response (20 ms)")),
-                hasProperty("from", is(new ComponentName("UNKNOWN_TARGET"))),
-                hasProperty("to", is(new ComponentName("TestApp"))),
+                hasProperty("from", is(PARTICIPANT.called("UNKNOWN_TARGET"))),
+                hasProperty("to", is(PARTICIPANT.called("TestApp"))),
                 hasProperty("colour", is("blue"))
         )));
     }
