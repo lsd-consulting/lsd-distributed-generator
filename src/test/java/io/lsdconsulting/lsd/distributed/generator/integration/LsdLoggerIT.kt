@@ -1,7 +1,7 @@
 package io.lsdconsulting.lsd.distributed.generator.integration
 
 import com.lsd.core.LsdContext
-import com.lsd.core.domain.ComponentName
+import com.lsd.core.domain.ParticipantType.PARTICIPANT
 import com.lsd.core.domain.SequenceEvent
 import io.lsdconsulting.lsd.distributed.access.model.InteractionType
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction
@@ -64,6 +64,7 @@ class LsdLoggerIT {
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
         testRepository.save(interceptedInteraction1)
+        Thread.sleep(5)
 
         val interceptedInteraction2 = InterceptedInteraction(
             traceId = setupTraceId,
@@ -74,6 +75,7 @@ class LsdLoggerIT {
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
         testRepository.save(interceptedInteraction2)
+        Thread.sleep(5)
 
         val interceptedInteraction3 = InterceptedInteraction(
             traceId = mainTraceId,
@@ -85,6 +87,7 @@ class LsdLoggerIT {
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
         testRepository.save(interceptedInteraction3)
+        Thread.sleep(5)
 
         val interceptedInteraction4 = InterceptedInteraction(
             traceId = setupTraceId,
@@ -95,6 +98,7 @@ class LsdLoggerIT {
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
         testRepository.save(interceptedInteraction4)
+        Thread.sleep(5)
 
         val interceptedInteraction5 = InterceptedInteraction(
             traceId = mainTraceId,
@@ -107,6 +111,7 @@ class LsdLoggerIT {
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
         testRepository.save(interceptedInteraction5)
+        Thread.sleep(5)
 
         val interceptedInteraction6 = InterceptedInteraction(
             traceId = mainTraceId,
@@ -118,6 +123,7 @@ class LsdLoggerIT {
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
         testRepository.save(interceptedInteraction6)
+        Thread.sleep(5)
 
         underTest.captureInteractionsFromDatabase(
             linkedMapOf(
@@ -131,33 +137,33 @@ class LsdLoggerIT {
             sequenceEventSlot, contains(
                 allOf(
                     hasProperty("label", `is`("GET /api-listener?message=from_test")),
-                    hasProperty("from", `is`(ComponentName(sourceName))),
-                    hasProperty("to", `is`(ComponentName(targetName))),
+                    hasProperty("from", `is`(PARTICIPANT.called(sourceName))),
+                    hasProperty("to", `is`(PARTICIPANT.called(targetName))),
                     hasProperty("colour", `is`("blue"))
                 ), allOf(
                     hasProperty("label", `is`("publish event")),
-                    hasProperty("from", `is`(ComponentName("TestApp"))),
-                    hasProperty("to", `is`(ComponentName("SomethingDoneEvent"))),
+                    hasProperty("from", `is`(PARTICIPANT.called("TestApp"))),
+                    hasProperty("to", `is`(PARTICIPANT.called("SomethingDoneEvent"))),
                     hasProperty("colour", `is`("green"))
                 ), allOf(
                     hasProperty("label", `is`("sync 200 OK response (10 ms)")),
-                    hasProperty("from", `is`(ComponentName(targetName))),
-                    hasProperty("to", `is`(ComponentName(sourceName))),
+                    hasProperty("from", `is`(PARTICIPANT.called(targetName))),
+                    hasProperty("to", `is`(PARTICIPANT.called(sourceName))),
                     hasProperty("colour", `is`("blue"))
                 ),allOf(
                     hasProperty("label", `is`("consume message")),
-                    hasProperty("from", `is`(ComponentName("SomethingDoneEvent"))),
-                    hasProperty("to", `is`(ComponentName("TestApp"))),
+                    hasProperty("from", `is`(PARTICIPANT.called("SomethingDoneEvent"))),
+                    hasProperty("to", `is`(PARTICIPANT.called("TestApp"))),
                     hasProperty("colour", `is`("green"))
                 ),allOf(
                     hasProperty("label", `is`("POST /external-api?message=from_feign")),
-                    hasProperty("from", `is`(ComponentName("TestApp"))),
-                    hasProperty("to", `is`(ComponentName("UNKNOWN_TARGET"))),
+                    hasProperty("from", `is`(PARTICIPANT.called("TestApp"))),
+                    hasProperty("to", `is`(PARTICIPANT.called("UNKNOWN_TARGET"))),
                     hasProperty("colour", `is`("blue"))
                 ),allOf(
                     hasProperty("label", `is`("sync 200 OK response (20 ms)")),
-                    hasProperty("from", `is`(ComponentName("UNKNOWN_TARGET"))),
-                    hasProperty("to", `is`(ComponentName("TestApp"))),
+                    hasProperty("from", `is`(PARTICIPANT.called("UNKNOWN_TARGET"))),
+                    hasProperty("to", `is`(PARTICIPANT.called("TestApp"))),
                     hasProperty("colour", `is`("blue"))
                 )
             )
