@@ -28,7 +28,7 @@ class LsdLoggerShould {
     private val underTest = LsdLogger(interactionGenerator, lsdContext)
 
     @Test
-    fun captureInteractionName() {
+    fun `capture interaction name`() {
         val interceptedInteraction = InterceptedInteraction(traceId = "", interactionType = RESPONSE, elapsedTime = 0, createdAt = ZonedDateTime.now(ZoneId.of("UTC")))
         every { interceptedDocumentRepository.findByTraceIds(traceId) } returns listOf(interceptedInteraction)
         val message: Message = MessageBuilder.messageBuilder().label("interactionName").data("body").build()
@@ -42,7 +42,7 @@ class LsdLoggerShould {
     }
 
     @Test
-    fun captureInteractionNamesWithColour() {
+    fun `capture interaction names with colour`() {
         val interceptedInteraction1 = InterceptedInteraction(traceId = "", interactionType = RESPONSE, elapsedTime = 0, createdAt = ZonedDateTime.now(ZoneId.of("UTC")))
         val interceptedInteraction2 = InterceptedInteraction(traceId = "", interactionType = RESPONSE, elapsedTime = 0, createdAt = ZonedDateTime.now(ZoneId.of("UTC")))
         every { interceptedDocumentRepository.findByTraceIds(traceId) } returns listOf(interceptedInteraction1)

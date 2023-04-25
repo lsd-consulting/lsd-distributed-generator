@@ -26,7 +26,7 @@ internal class InteractionGeneratorShould {
     )
 
     @Test
-    fun handleInactiveRepository() {
+    fun `handle inactive repository`() {
         every { interceptedDocumentRepository.findByTraceIds("traceId") } returns listOf()
 
         val result = underTest.generate(mapOf("traceId" to Optional.empty()))

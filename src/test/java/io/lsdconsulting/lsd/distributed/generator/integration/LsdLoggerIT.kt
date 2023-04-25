@@ -52,7 +52,7 @@ class LsdLoggerIT {
     }
 
     @Test
-    fun shouldLogInteractionsInLsdContextWithSuppliedMultipleTraceIds() {
+    fun `should log interactions in lsd context with supplied multiple trace ids`() {
         val interceptedInteraction1 = InterceptedInteraction(
             traceId = mainTraceId,
             httpMethod = "GET",
