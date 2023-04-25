@@ -1,7 +1,7 @@
 dependencies {
 
     // LSD
-    api 'io.github.lsd-consulting:lsd-core:4.1.0'
+    api 'io.github.lsd-consulting:lsd-core:4.1.1'
     implementation 'io.github.lsd-consulting:lsd-formatting-library:1.0.8'
     implementation 'io.github.lsd-consulting:lsd-distributed-mongodb-access:3.0.3'
 
