@@ -2,10 +2,8 @@ package io.lsdconsulting.lsd.distributed.generator.diagram.event.builder
 
 import com.lsd.core.builders.MessageBuilder.Companion.messageBuilder
 import com.lsd.core.domain.MessageType
-import io.lsdconsulting.lsd.distributed.generator.diagram.event.SequenceEventBuilder
 
-class ConsumeMessageBuilder : SequenceEventBuilder {
-    override fun build(
+fun buildConsumeMessage(
         id: String,
         label: String,
         serviceName: String,
@@ -21,4 +19,3 @@ class ConsumeMessageBuilder : SequenceEventBuilder {
         .colour(colour)
         .data(data)
         .build()
-}
