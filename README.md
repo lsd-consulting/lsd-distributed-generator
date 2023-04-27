@@ -9,7 +9,7 @@
 [![GitHub release](https://img.shields.io/github/release/lsd-consulting/lsd-distributed-generator)](https://github.com/lsd-consulting/lsd-distributed-generator/releases)
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.lsd-consulting/lsd-distributed-generator)
 
-A Liquid Sequence Diagram generator from data gathered by the `lsd-distributed-interceptors` library and stored in a database. 
+A Living Sequence Diagram generator from data gathered by the `lsd-distributed-interceptors` library and stored in a database. 
 
 Here is a sample of an LSD that this library can generate:
 
@@ -31,13 +31,4 @@ To use the `lsd-distributed-generator` library just add it to the dependencies:
 implementation "io.github.lsd-consulting:lsd-distributed-generator:+"
 ```
 
-## Properties
-
-The following properties can be overridden by setting System or Environment properties.
-
-| Property Name        | Default     | Required | Description |
-| ----------- | ----------- | ------------ | ------------ |
-| lsd.dist.db.connectionString | N/A | YES | Connection string to the database, eg. mongodb://localhost:27017 |
-| lsd.dist.db.connectionTimeout.millis | 500 | NO | Database connection timeout. |
-| lsd.dist.db.trustStoreLocation | N/A | NO | The location of the trust store containing the certificate of the signing authority (only required for TLS where the certificate if provided). |
-| lsd.dist.db.trustStorePassword | N/A | NO | The password to the trust store containing the certificate of the signing authority. |
+and set the [connector's properties](https://github.com/lsd-consulting/lsd-distributed-mongodb-access#properties).
