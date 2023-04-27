@@ -8,10 +8,6 @@ dependencies {
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.26'
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
-
     // Other
     implementation 'com.google.code.gson:gson:2.10.1'
 }
