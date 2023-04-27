@@ -10,7 +10,6 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 internal class InteractionDataGeneratorShould {
-    private val underTest = InteractionDataGenerator()
 
     @Test
     fun `build with request headers only`() {
@@ -24,7 +23,7 @@ internal class InteractionDataGeneratorShould {
             elapsedTime = 0,
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
-        val result = underTest.buildFrom(interaction)
+        val result = buildDataFrom(interaction)
         assertThat(result.requestHeaders, `is`(requestHeaders))
         assertThat(result.responseHeaders, `is`(Matchers.nullValue()))
         assertThat(result.headers, `is`(Matchers.nullValue()))
@@ -43,7 +42,7 @@ internal class InteractionDataGeneratorShould {
             elapsedTime = 0,
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
-        val result = underTest.buildFrom(interaction)
+        val result = buildDataFrom(interaction)
         assertThat(result.requestHeaders, `is`(Matchers.nullValue()))
         assertThat(result.responseHeaders, `is`(responseHeaders))
         assertThat(result.headers, `is`(Matchers.nullValue()))
@@ -62,7 +61,7 @@ internal class InteractionDataGeneratorShould {
             elapsedTime = 0,
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
-        val result = underTest.buildFrom(interaction)
+        val result = buildDataFrom(interaction)
         assertThat(result.requestHeaders, `is`(Matchers.nullValue()))
         assertThat(result.responseHeaders, `is`(Matchers.nullValue()))
         assertThat(result.headers, `is`(headers))

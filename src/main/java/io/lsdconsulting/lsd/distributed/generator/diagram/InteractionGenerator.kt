@@ -3,7 +3,7 @@ package io.lsdconsulting.lsd.distributed.generator.diagram
 import com.lsd.core.domain.SequenceEvent
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository
-import io.lsdconsulting.lsd.distributed.generator.diagram.data.InteractionDataGenerator
+import io.lsdconsulting.lsd.distributed.generator.diagram.data.buildDataFrom
 import io.lsdconsulting.lsd.distributed.generator.diagram.dto.EventContainer
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap
 import io.lsdconsulting.lsd.distributed.generator.diagram.label.LabelGeneratorMap
@@ -14,7 +14,6 @@ class InteractionGenerator(
     private val interceptedDocumentRepository: InterceptedDocumentRepository,
     private val eventBuilderMap: EventBuilderMap,
     private val labelGeneratorMap: LabelGeneratorMap,
-    private val interactionDataGenerator: InteractionDataGenerator,
 ) {
     fun generate(traceIdToColourMap: Map<String, Optional<String>>): EventContainer {
         val traceIds = traceIdToColourMap.keys.toTypedArray()
@@ -33,7 +32,7 @@ class InteractionGenerator(
         val colour = Optional.ofNullable(
             traceIdToColourMap[interceptedInteraction.traceId]
         ).flatMap { x: Optional<String>? -> x }.orElse(NO_COLOUR)
-        val data = PrettyPrinter.prettyPrintJson(interactionDataGenerator.buildFrom(interceptedInteraction))
+        val data = PrettyPrinter.prettyPrintJson(buildDataFrom(interceptedInteraction))
         val serviceName = interceptedInteraction.serviceName
         val target = interceptedInteraction.target
         val type = interceptedInteraction.interactionType

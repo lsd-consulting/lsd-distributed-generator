@@ -7,7 +7,6 @@ import io.lsdconsulting.lsd.distributed.access.model.InteractionType
 import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator
-import io.lsdconsulting.lsd.distributed.generator.diagram.data.InteractionDataGenerator
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap
 import io.lsdconsulting.lsd.distributed.generator.diagram.label.LabelGeneratorMap
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
@@ -36,7 +35,6 @@ internal class InteractionGeneratorIT {
     )
 
     private val labelGeneratorMap = LabelGeneratorMap()
-    private val interactionDataGenerator = InteractionDataGenerator()
 
     private lateinit var underTest:InteractionGenerator
 
@@ -51,7 +49,6 @@ internal class InteractionGeneratorIT {
             interceptedDocumentRepository,
             eventBuilderMap,
             labelGeneratorMap,
-            interactionDataGenerator
         )
     }
 

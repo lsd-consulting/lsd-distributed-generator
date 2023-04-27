@@ -5,7 +5,6 @@ import com.lsd.core.LsdContext;
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository;
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator;
 import io.lsdconsulting.lsd.distributed.generator.diagram.LsdLogger;
-import io.lsdconsulting.lsd.distributed.generator.diagram.data.InteractionDataGenerator;
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap;
 import io.lsdconsulting.lsd.distributed.generator.diagram.label.LabelGeneratorMap;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,15 +32,9 @@ public class LibraryConfig {
     }
 
     @Bean
-    public InteractionDataGenerator interactionDataGenerator() {
-        return new InteractionDataGenerator();
-    }
-
-    @Bean
     public InteractionGenerator interactionGenerator(InterceptedDocumentRepository interceptedDocumentRepository,
-                                                     EventBuilderMap eventBuilderMap, LabelGeneratorMap labelGeneratorMap,
-                                                     InteractionDataGenerator interactionDataGenerator) {
-        return new InteractionGenerator(interceptedDocumentRepository,eventBuilderMap, labelGeneratorMap, interactionDataGenerator);
+                                                     EventBuilderMap eventBuilderMap, LabelGeneratorMap labelGeneratorMap) {
+        return new InteractionGenerator(interceptedDocumentRepository,eventBuilderMap, labelGeneratorMap);
     }
 
     @Bean
