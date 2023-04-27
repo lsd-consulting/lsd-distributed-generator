@@ -6,10 +6,10 @@ import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRep
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator;
 import io.lsdconsulting.lsd.distributed.generator.diagram.LsdLogger;
 import io.lsdconsulting.lsd.distributed.generator.diagram.data.InteractionDataGenerator;
-import io.lsdconsulting.lsd.distributed.generator.diagram.event.ConsumeMessageBuilder;
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap;
-import io.lsdconsulting.lsd.distributed.generator.diagram.event.MessageBuilder;
-import io.lsdconsulting.lsd.distributed.generator.diagram.event.SynchronousResponseBuilder;
+import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.ConsumeMessageBuilder;
+import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.MessageBuilder;
+import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.SynchronousResponseBuilder;
 import io.lsdconsulting.lsd.distributed.generator.diagram.label.LabelGeneratorMap;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -26,18 +26,18 @@ public class LibraryConfig {
     }
 
     @Bean
-    public MessageBuilder messageBuilder(IdGenerator idGenerator){
-        return new MessageBuilder(idGenerator);
+    public MessageBuilder messageBuilder(){
+        return new MessageBuilder();
     }
 
     @Bean
-    public ConsumeMessageBuilder consumeMessageBuilder(IdGenerator idGenerator){
-        return new ConsumeMessageBuilder(idGenerator);
+    public ConsumeMessageBuilder consumeMessageBuilder(){
+        return new ConsumeMessageBuilder();
     }
 
     @Bean
-    public SynchronousResponseBuilder synchronousResponseBuilder(IdGenerator idGenerator){
-        return new SynchronousResponseBuilder(idGenerator);
+    public SynchronousResponseBuilder synchronousResponseBuilder(){
+        return new SynchronousResponseBuilder();
     }
 
     @Bean
@@ -46,9 +46,11 @@ public class LibraryConfig {
     }
 
     @Bean
-    public EventBuilderMap eventBuilderMap(MessageBuilder messageBuilder, SynchronousResponseBuilder synchronousResponseBuilder,
+    public EventBuilderMap eventBuilderMap(IdGenerator idGenerator,
+                                           MessageBuilder messageBuilder,
+                                           SynchronousResponseBuilder synchronousResponseBuilder,
                                            ConsumeMessageBuilder consumeMessageBuilder) {
-        return new EventBuilderMap(messageBuilder, synchronousResponseBuilder, consumeMessageBuilder);
+        return new EventBuilderMap(idGenerator, messageBuilder, synchronousResponseBuilder, consumeMessageBuilder);
     }
 
     @Bean
