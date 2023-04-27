@@ -31,6 +31,6 @@ internal class InteractionGeneratorShould {
 
         val result = underTest.generate(mapOf("traceId" to Optional.empty()))
 
-        assertThat(result, `is`(EventContainer.builder().events(emptyList()).build()))
+        assertThat(result, `is`(EventContainer(events = emptyList())))
     }
 }

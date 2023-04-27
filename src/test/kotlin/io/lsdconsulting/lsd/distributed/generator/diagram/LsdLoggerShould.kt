@@ -33,7 +33,7 @@ class LsdLoggerShould {
         every { interceptedDocumentRepository.findByTraceIds(traceId) } returns listOf(interceptedInteraction)
         val message: Message = MessageBuilder.messageBuilder().label("interactionName").data("body").build()
         every {interactionGenerator.generate(any())} returns
-            EventContainer.builder().events(listOf<SequenceEvent>(message)).build()
+            EventContainer(events = listOf<SequenceEvent>(message))
 
         underTest.captureInteractionsFromDatabase(traceId)
 
@@ -49,9 +49,7 @@ class LsdLoggerShould {
         every { interceptedDocumentRepository.findByTraceIds(secondaryTraceId) } returns listOf(interceptedInteraction2)
         val message: Message = MessageBuilder.messageBuilder().label("interactionName").data("body").build()
         every { interactionGenerator.generate(any()) } returns
-            EventContainer.builder().events(
-                listOf<SequenceEvent>(message, message)
-            ).build()
+            EventContainer(events = listOf<SequenceEvent>(message, message))
 
 
         underTest.captureInteractionsFromDatabase(

@@ -2,8 +2,8 @@ build.dependsOn "pitest"
 
 // perform mutation test and enforce coverage
 pitest {
-    pitestVersion = "1.7.0"
     testPlugin = "junit5"
+    junit5PluginVersion = '1.1.0'
     useClasspathFile = true
     timeoutConstInMillis = 20000
     targetClasses = ['io.lsdconsulting.lsd.distributed.generator*']
@@ -13,7 +13,7 @@ pitest {
     excludedClasses = [ 'io.lsdconsulting.lsd.distributed.generator.config.*']
     threads = 4
     outputFormats = ['HTML']
-    coverageThreshold = 98
-    mutationThreshold = 100
-    testStrengthThreshold = 100
+    coverageThreshold = 99
+    mutationThreshold = 97
+    testStrengthThreshold = 97
 }

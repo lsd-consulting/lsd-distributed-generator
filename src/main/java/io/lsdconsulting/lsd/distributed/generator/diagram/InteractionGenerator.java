@@ -35,11 +35,10 @@ public class InteractionGenerator {
         final var traceIds = traceIdToColourMap.keySet().toArray(new String[0]);
         List<InterceptedInteraction> interactions = interceptedDocumentRepository.findByTraceIds(traceIds);
 
-        return EventContainer.builder()
-                .events(getEvents(traceIdToColourMap, interactions))
-                .startTime(getStartTime(interactions))
-                .finishTime(getFinishTime(interactions))
-                .build();
+        return new EventContainer(
+                getEvents(traceIdToColourMap, interactions),
+                getStartTime(interactions),
+                getFinishTime(interactions));
     }
 
     private ZonedDateTime getFinishTime(List<InterceptedInteraction> interactions) {
