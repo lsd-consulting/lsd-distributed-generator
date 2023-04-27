@@ -38,7 +38,7 @@ class InteractionGenerator(
         val target = interceptedInteraction.target
         val type = interceptedInteraction.interactionType
         val label = labelGeneratorMap.generate(interceptedInteraction)
-        eventBuilderMap.build(type, label, serviceName, target, colour, data)
+        eventBuilderMap.build(type, label, serviceName!!, target!!, colour, data)
     }
 
     companion object {
