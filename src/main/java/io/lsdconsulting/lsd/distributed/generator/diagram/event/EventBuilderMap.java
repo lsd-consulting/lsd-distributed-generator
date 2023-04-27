@@ -14,17 +14,17 @@ import static io.lsdconsulting.lsd.distributed.access.model.InteractionType.*;
 
 public class EventBuilderMap {
     private final IdGenerator idGenerator;
-    private final Map<InteractionType, QuintFunction<IdGenerator, String, String, String, String, String, SequenceEvent>> eventBuilders = new HashMap<>();
+    private final Map<InteractionType, QuintFunction<String, String, String, String, String, String, SequenceEvent>> eventBuilders = new HashMap<>();
 
-    public EventBuilderMap(IdGenerator idGenerator, MessageBuilder messageBuilder, SynchronousResponseBuilder synchronousResponseBuilder, ConsumeMessageBuilder consumeMessageBuilder) {
+    public EventBuilderMap(IdGenerator idGenerator) {
         this.idGenerator = idGenerator;
-        eventBuilders.put(RESPONSE, synchronousResponseBuilder::build);
-        eventBuilders.put(REQUEST, messageBuilder::build);
-        eventBuilders.put(PUBLISH, messageBuilder::build);
-        eventBuilders.put(CONSUME, consumeMessageBuilder::build);
+        eventBuilders.put(RESPONSE, new SynchronousResponseBuilder()::build);
+        eventBuilders.put(REQUEST, new MessageBuilder()::build);
+        eventBuilders.put(PUBLISH, new MessageBuilder()::build);
+        eventBuilders.put(CONSUME, new ConsumeMessageBuilder()::build);
     }
 
     public SequenceEvent build(InteractionType type, String label, String serviceName, String target, String colour, String data) {
-        return eventBuilders.get(type).apply(idGenerator, label, serviceName, target, colour, data);
+        return eventBuilders.get(type).apply(idGenerator.next(), label, serviceName, target, colour, data);
     }
 }

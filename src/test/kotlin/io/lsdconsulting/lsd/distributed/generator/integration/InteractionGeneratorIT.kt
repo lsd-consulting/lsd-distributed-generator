@@ -9,9 +9,6 @@ import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRep
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator
 import io.lsdconsulting.lsd.distributed.generator.diagram.data.InteractionDataGenerator
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap
-import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.ConsumeMessageBuilder
-import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.MessageBuilder
-import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.SynchronousResponseBuilder
 import io.lsdconsulting.lsd.distributed.generator.diagram.label.LabelGeneratorMap
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.hamcrest.MatcherAssert.assertThat
@@ -48,10 +45,7 @@ internal class InteractionGeneratorIT {
         val idGenerator = IdGenerator(true)
 
         val eventBuilderMap = EventBuilderMap(
-            idGenerator,
-            MessageBuilder(),
-            SynchronousResponseBuilder(),
-            ConsumeMessageBuilder()
+            idGenerator
         )
         underTest = InteractionGenerator(
             interceptedDocumentRepository,
