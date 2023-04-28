@@ -69,6 +69,7 @@ class LsdLoggerIT {
         val interceptedInteraction2 = InterceptedInteraction(
             traceId = setupTraceId,
             target = "SomethingDoneEvent",
+            path = "path",
             serviceName = "TestApp",
             interactionType = InteractionType.PUBLISH,
             elapsedTime = 0,
@@ -81,6 +82,7 @@ class LsdLoggerIT {
             traceId = mainTraceId,
             serviceName = sourceName,
             target = targetName,
+            path = "path",
             interactionType = InteractionType.RESPONSE,
             elapsedTime = 10L,
             httpStatus = "200 OK",
@@ -93,6 +95,7 @@ class LsdLoggerIT {
             traceId = setupTraceId,
             serviceName = "TestApp",
             target = "SomethingDoneEvent",
+            path = "path",
             interactionType = InteractionType.CONSUME,
             elapsedTime = 0,
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
@@ -117,6 +120,7 @@ class LsdLoggerIT {
             traceId = mainTraceId,
             serviceName = "TestApp",
             target = "UNKNOWN_TARGET",
+            path = "path",
             interactionType = InteractionType.RESPONSE,
             elapsedTime = 20L,
             httpStatus = "200 OK",
