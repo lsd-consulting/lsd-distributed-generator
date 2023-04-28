@@ -20,6 +20,9 @@ internal class InteractionDataGeneratorShould {
             requestHeaders = requestHeaders,
             responseHeaders = mapOf("name1" to listOf("value2")),
             body = "someBody",
+            serviceName = "serviceName",
+            target = "target",
+            path = "path",
             elapsedTime = 0,
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
@@ -39,6 +42,9 @@ internal class InteractionDataGeneratorShould {
             requestHeaders = mutableMapOf("name1" to listOf("value2")),
             responseHeaders = responseHeaders,
             body = "someBody",
+            serviceName = "serviceName",
+            target = "target",
+            path = "path",
             elapsedTime = 0,
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
@@ -58,6 +64,9 @@ internal class InteractionDataGeneratorShould {
             requestHeaders = headers,
             responseHeaders = mapOf("name1" to listOf("value2")),
             body = "someBody",
+            serviceName = "serviceName",
+            target = "target",
+            path = "path",
             elapsedTime = 0,
             createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
         )
