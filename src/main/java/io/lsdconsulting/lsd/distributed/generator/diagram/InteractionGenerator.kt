@@ -6,14 +6,13 @@ import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRep
 import io.lsdconsulting.lsd.distributed.generator.diagram.data.buildDataFrom
 import io.lsdconsulting.lsd.distributed.generator.diagram.dto.EventContainer
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap
-import io.lsdconsulting.lsd.distributed.generator.diagram.label.LabelGeneratorMap
+import io.lsdconsulting.lsd.distributed.generator.diagram.label.generateLabel
 import lsd.format.PrettyPrinter
 import java.util.*
 
 class InteractionGenerator(
     private val interceptedDocumentRepository: InterceptedDocumentRepository,
     private val eventBuilderMap: EventBuilderMap,
-    private val labelGeneratorMap: LabelGeneratorMap,
 ) {
     fun generate(traceIdToColourMap: Map<String, Optional<String>>): EventContainer {
         val traceIds = traceIdToColourMap.keys.toTypedArray()
@@ -36,7 +35,7 @@ class InteractionGenerator(
         val serviceName = interceptedInteraction.serviceName
         val target = interceptedInteraction.target
         val type = interceptedInteraction.interactionType
-        val label = labelGeneratorMap.generateLabel(interceptedInteraction)
+        val label = generateLabel(interceptedInteraction)
         eventBuilderMap.build(type, label, serviceName!!, target!!, colour, data)
     }
 

@@ -8,7 +8,6 @@ import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap
-import io.lsdconsulting.lsd.distributed.generator.diagram.label.LabelGeneratorMap
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
@@ -34,8 +33,6 @@ internal class InteractionGeneratorIT {
         InterceptedDocumentRepository::class.java
     )
 
-    private val labelGeneratorMap = LabelGeneratorMap()
-
     private lateinit var underTest:InteractionGenerator
 
     @BeforeEach
@@ -48,7 +45,6 @@ internal class InteractionGeneratorIT {
         underTest = InteractionGenerator(
             interceptedDocumentRepository,
             eventBuilderMap,
-            labelGeneratorMap,
         )
     }
 
