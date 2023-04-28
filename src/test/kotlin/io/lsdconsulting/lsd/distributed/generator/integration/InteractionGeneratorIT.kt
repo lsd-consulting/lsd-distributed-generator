@@ -58,7 +58,7 @@ internal class InteractionGeneratorIT {
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID))
             .willReturn(listOf(interceptedInteraction))
 
-        val result = underTest.generate(mapOf(TRACE_ID to Optional.of("grey"))).events
+        val result = underTest.generate(mapOf(TRACE_ID to "grey")).events
 
         assertThat(result, hasSize(1))
         val sequenceEvent = result[0] as Message
@@ -90,7 +90,7 @@ internal class InteractionGeneratorIT {
         )
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(interceptedInteractions)
 
-        val result = underTest.generate(mapOf(TRACE_ID to Optional.of("[#grey]"))).events
+        val result = underTest.generate(mapOf(TRACE_ID to "[grey]")).events
 
         val interactions = result.stream().map {it.toPumlMarkup() }.collect(Collectors.toList())
         assertThat(interactions, hasSize(6))
@@ -130,7 +130,7 @@ internal class InteractionGeneratorIT {
         )
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(interceptedInteractions)
 
-        val result = underTest.generate(mapOf(TRACE_ID to Optional.of("[#grey]")))
+        val result = underTest.generate(mapOf(TRACE_ID to "[grey]"))
 
         assertThat(
             result.startTime,
@@ -162,7 +162,7 @@ internal class InteractionGeneratorIT {
         )
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(interceptedInteractions)
 
-        val result = underTest.generate(mapOf(TRACE_ID to Optional.of("[#grey]")))
+        val result = underTest.generate(mapOf(TRACE_ID to "[grey]"))
 
         assertThat(
             result.finishTime,
@@ -180,7 +180,7 @@ internal class InteractionGeneratorIT {
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID))
             .willReturn(listOf(interceptedInteraction))
 
-        val interactionNames = underTest.generate(mapOf(TRACE_ID to Optional.empty())).events
+        val interactionNames = underTest.generate(mapOf(TRACE_ID to null)).events
 
         val body = (interactionNames[0] as Message).data as String
         assertThat(body, containsString("requestHeaders"))
@@ -198,7 +198,7 @@ internal class InteractionGeneratorIT {
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID))
             .willReturn(listOf(interceptedInteraction))
 
-        val interactionNames = underTest.generate(mapOf(TRACE_ID to Optional.empty())).events
+        val interactionNames = underTest.generate(mapOf(TRACE_ID to null)).events
 
         val body = (interactionNames[0] as Message).data as String
         assertThat(body, containsString("responseHeaders"))
@@ -216,7 +216,7 @@ internal class InteractionGeneratorIT {
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID))
             .willReturn(listOf(interceptedInteraction))
 
-        val interactionNames = underTest.generate(mapOf(TRACE_ID to Optional.empty())).events
+        val interactionNames = underTest.generate(mapOf(TRACE_ID to null)).events
 
         val body = (interactionNames[0] as Message).data as String
         assertThat(body, containsString("headers"))

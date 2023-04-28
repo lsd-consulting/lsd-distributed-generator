@@ -16,7 +16,6 @@ import org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric
 import org.junit.jupiter.api.Test
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.util.*
 
 class LsdLoggerShould {
     private val interceptedDocumentRepository = mockk<InterceptedDocumentRepository>()
@@ -37,7 +36,7 @@ class LsdLoggerShould {
 
         underTest.captureInteractionsFromDatabase(lsdContext, traceId)
 
-        verify { interactionGenerator.generate(mapOf(traceId to Optional.empty())) }
+        verify { interactionGenerator.generate(mapOf(traceId to null)) }
         verify { lsdContext.capture(message) }
     }
 
@@ -54,12 +53,12 @@ class LsdLoggerShould {
 
         underTest.captureInteractionsFromDatabase(lsdContext,
             mapOf(
-                traceId to Optional.of("red"),
-                secondaryTraceId to Optional.of("green")
+                traceId to "red",
+                secondaryTraceId to "green"
             )
         )
 
-        verify {  interactionGenerator.generate(mapOf(traceId to Optional.of("red"), secondaryTraceId to Optional.of("green"))) }
+        verify {  interactionGenerator.generate(mapOf(traceId to "red", secondaryTraceId to "green")) }
         verify(exactly = 2) {lsdContext.capture(message) }
     }
 }

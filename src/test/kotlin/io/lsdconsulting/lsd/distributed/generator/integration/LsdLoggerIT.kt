@@ -127,8 +127,8 @@ class LsdLoggerIT {
 
         underTest.captureInteractionsFromDatabase(lsdContext,
             linkedMapOf(
-                mainTraceId to Optional.of("blue"),
-                setupTraceId to Optional.of("green")
+                mainTraceId to "blue",
+                setupTraceId to "green"
             )
         )
 

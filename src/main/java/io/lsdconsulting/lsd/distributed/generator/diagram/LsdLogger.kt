@@ -1,18 +1,17 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram
 
 import com.lsd.core.LsdContext
-import java.util.*
 
 class LsdLogger(
     private val interactionGenerator: InteractionGenerator
 ) {
     fun captureInteractionsFromDatabase(lsdContext: LsdContext, vararg traceIds: String) {
-        val traceIdToColourMap = mutableMapOf<String, Optional<String>>()
-        traceIds.forEach { traceIdToColourMap[it] = Optional.empty() }
+        val traceIdToColourMap = mutableMapOf<String, String?>()
+        traceIds.forEach { traceIdToColourMap[it] = null }
         captureInteractionsFromDatabase(lsdContext, traceIdToColourMap)
     }
 
-    fun captureInteractionsFromDatabase(lsdContext: LsdContext, traceIdToColourMap: Map<String, Optional<String>>) {
+    fun captureInteractionsFromDatabase(lsdContext: LsdContext, traceIdToColourMap: Map<String, String?>) {
         interactionGenerator.generate(traceIdToColourMap).events.forEach { interaction ->
             lsdContext.capture(interaction)
         }

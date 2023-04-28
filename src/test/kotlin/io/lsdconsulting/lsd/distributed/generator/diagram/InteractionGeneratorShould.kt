@@ -8,7 +8,6 @@ import io.mockk.mockk
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Test
-import java.util.*
 
 internal class InteractionGeneratorShould {
     private val interceptedDocumentRepository = mockk<InterceptedDocumentRepository>()
@@ -23,7 +22,7 @@ internal class InteractionGeneratorShould {
     fun `handle inactive repository`() {
         every { interceptedDocumentRepository.findByTraceIds("traceId") } returns listOf()
 
-        val result = underTest.generate(mapOf("traceId" to Optional.empty()))
+        val result = underTest.generate(mapOf("traceId" to null))
 
         assertThat(result, `is`(EventContainer(events = emptyList())))
     }
