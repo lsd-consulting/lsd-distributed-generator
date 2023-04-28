@@ -4,16 +4,15 @@ import com.lsd.core.LsdContext
 import java.util.*
 
 class LsdLogger(
-    private val interactionGenerator: InteractionGenerator,
-    private val lsdContext: LsdContext
+    private val interactionGenerator: InteractionGenerator
 ) {
-    fun captureInteractionsFromDatabase(vararg traceIds: String) {
+    fun captureInteractionsFromDatabase(lsdContext: LsdContext, vararg traceIds: String) {
         val traceIdToColourMap = mutableMapOf<String, Optional<String>>()
         traceIds.forEach { traceIdToColourMap[it] = Optional.empty() }
-        captureInteractionsFromDatabase(traceIdToColourMap)
+        captureInteractionsFromDatabase(lsdContext, traceIdToColourMap)
     }
 
-    fun captureInteractionsFromDatabase(traceIdToColourMap: Map<String, Optional<String>>) {
+    fun captureInteractionsFromDatabase(lsdContext: LsdContext, traceIdToColourMap: Map<String, Optional<String>>) {
         interactionGenerator.generate(traceIdToColourMap).events.forEach { interaction ->
             lsdContext.capture(interaction)
         }

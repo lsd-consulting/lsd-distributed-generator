@@ -1,7 +1,6 @@
 package io.lsdconsulting.lsd.distributed.generator.config
 
 import com.lsd.core.IdGenerator
-import com.lsd.core.LsdContext
 import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator
 import io.lsdconsulting.lsd.distributed.generator.diagram.LsdLogger
@@ -15,11 +14,10 @@ import org.springframework.context.annotation.Configuration
 @ConditionalOnProperty(name = ["lsd.dist.connectionString"])
 open class LibraryConfig {
     @Bean
-    open fun idGenerator(@Value("\${lsd.core.ids.deterministic:false}") isDeterministic: Boolean) =
-        IdGenerator(isDeterministic)
+    open fun idGenerator(@Value("\${lsd.core.ids.deterministic:false}") isDeterministic: Boolean) = IdGenerator(isDeterministic)
 
     @Bean
-    open fun eventBuilderMap(idGenerator: IdGenerator?) = EventBuilderMap(idGenerator!!)
+    open fun eventBuilderMap(idGenerator: IdGenerator) = EventBuilderMap(idGenerator)
 
     @Bean
     open fun interactionGenerator(
@@ -28,6 +26,5 @@ open class LibraryConfig {
     ) = InteractionGenerator(interceptedDocumentRepository, eventBuilderMap)
 
     @Bean
-    open fun lsdLogger(interactionGenerator: InteractionGenerator) =
-        LsdLogger(interactionGenerator, LsdContext.instance)
+    open fun lsdLogger(interactionGenerator: InteractionGenerator) = LsdLogger(interactionGenerator)
 }

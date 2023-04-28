@@ -25,7 +25,7 @@ class LsdLoggerShould {
     private val traceId = randomAlphanumeric(8)
     private val secondaryTraceId = randomAlphanumeric(8)
 
-    private val underTest = LsdLogger(interactionGenerator, lsdContext)
+    private val underTest = LsdLogger(interactionGenerator)
 
     @Test
     fun `capture interaction name`() {
@@ -35,7 +35,7 @@ class LsdLoggerShould {
         every {interactionGenerator.generate(any())} returns
             EventContainer(events = listOf<SequenceEvent>(message))
 
-        underTest.captureInteractionsFromDatabase(traceId)
+        underTest.captureInteractionsFromDatabase(lsdContext, traceId)
 
         verify { interactionGenerator.generate(mapOf(traceId to Optional.empty())) }
         verify { lsdContext.capture(message) }
@@ -52,7 +52,7 @@ class LsdLoggerShould {
             EventContainer(events = listOf<SequenceEvent>(message, message))
 
 
-        underTest.captureInteractionsFromDatabase(
+        underTest.captureInteractionsFromDatabase(lsdContext,
             mapOf(
                 traceId to Optional.of("red"),
                 secondaryTraceId to Optional.of("green")

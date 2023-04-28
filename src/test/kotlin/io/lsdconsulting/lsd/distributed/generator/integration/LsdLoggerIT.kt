@@ -47,7 +47,7 @@ class LsdLoggerIT {
 
     @BeforeEach
     fun setup() {
-        underTest = LsdLogger(interactionGenerator, lsdContext)
+        underTest = LsdLogger(interactionGenerator)
         every { lsdContext.capture(capture(sequenceEventSlot)) } just Runs
     }
 
@@ -125,7 +125,7 @@ class LsdLoggerIT {
         testRepository.save(interceptedInteraction6)
         Thread.sleep(5)
 
-        underTest.captureInteractionsFromDatabase(
+        underTest.captureInteractionsFromDatabase(lsdContext,
             linkedMapOf(
                 mainTraceId to Optional.of("blue"),
                 setupTraceId to Optional.of("green")
