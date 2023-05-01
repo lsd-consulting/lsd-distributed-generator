@@ -7,7 +7,7 @@
 [![CI](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/ci.yml)
 [![Nightly Build](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/nightly.yml/badge.svg)](https://github.com/lsd-consulting/lsd-distributed-generator/actions/workflows/nightly.yml)
 [![GitHub release](https://img.shields.io/github/release/lsd-consulting/lsd-distributed-generator)](https://github.com/lsd-consulting/lsd-distributed-generator/releases)
-![Maven Central](https://img.shields.io/maven-central/v/io.github.lsd-consulting/lsd-distributed-generator)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.lsd-consulting/lsd-distributed-generator/badge.svg?style=flat&gav=true&color=blue)](https://maven-badges.herokuapp.com/maven-central/io.github.lsd-consulting/lsd-distributed-generator)
 
 A Living Sequence Diagram generator from data gathered by the `lsd-distributed-interceptors` library and stored in a database. 
 
