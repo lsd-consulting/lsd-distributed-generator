@@ -2,6 +2,7 @@ dependencies {
 
     // Spring
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
 
     // Others
     testImplementation 'org.junit.platform:junit-platform-commons:1.9.2'
