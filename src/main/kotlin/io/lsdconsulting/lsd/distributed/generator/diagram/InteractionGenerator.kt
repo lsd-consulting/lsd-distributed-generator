@@ -1,8 +1,8 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram
 
 import com.lsd.core.domain.SequenceEvent
-import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction
-import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository
+import io.lsdconsulting.lsd.distributed.connector.model.InterceptedInteraction
+import io.lsdconsulting.lsd.distributed.connector.repository.InterceptedDocumentRepository
 import io.lsdconsulting.lsd.distributed.generator.diagram.data.buildDataFrom
 import io.lsdconsulting.lsd.distributed.generator.diagram.dto.EventContainer
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap

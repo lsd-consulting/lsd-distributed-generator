@@ -3,8 +3,8 @@ package io.lsdconsulting.lsd.distributed.generator.integration
 import com.lsd.core.LsdContext
 import com.lsd.core.domain.ParticipantType.PARTICIPANT
 import com.lsd.core.domain.SequenceEvent
-import io.lsdconsulting.lsd.distributed.access.model.InteractionType
-import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction
+import io.lsdconsulting.lsd.distributed.connector.model.InteractionType
+import io.lsdconsulting.lsd.distributed.connector.model.InterceptedInteraction
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator
 import io.lsdconsulting.lsd.distributed.generator.diagram.LsdLogger
 import io.lsdconsulting.lsd.distributed.generator.integration.testapp.TestApplication

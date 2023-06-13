@@ -4,8 +4,8 @@ package io.lsdconsulting.lsd.distributed.generator.diagram.event
 //import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.SynchronousResponseBuilder
 import com.lsd.core.IdGenerator
 import com.lsd.core.domain.Message
-import io.lsdconsulting.lsd.distributed.access.model.InteractionType
-import io.lsdconsulting.lsd.distributed.access.model.InteractionType.*
+import io.lsdconsulting.lsd.distributed.connector.model.InteractionType
+import io.lsdconsulting.lsd.distributed.connector.model.InteractionType.*
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.buildConsumeMessage
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.buildMessage
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.buildSynchronousResponse

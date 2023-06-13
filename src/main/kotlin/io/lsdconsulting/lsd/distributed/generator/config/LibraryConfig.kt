@@ -1,7 +1,7 @@
 package io.lsdconsulting.lsd.distributed.generator.config
 
 import com.lsd.core.IdGenerator
-import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository
+import io.lsdconsulting.lsd.distributed.connector.repository.InterceptedDocumentRepository
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator
 import io.lsdconsulting.lsd.distributed.generator.diagram.LsdLogger
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap

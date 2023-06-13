@@ -1,7 +1,7 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram.label
 
-import io.lsdconsulting.lsd.distributed.access.model.InteractionType.*
-import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction
+import io.lsdconsulting.lsd.distributed.connector.model.InteractionType.*
+import io.lsdconsulting.lsd.distributed.connector.model.InterceptedInteraction
 
 fun generateLabel(interceptedInteraction: InterceptedInteraction) =
     when (interceptedInteraction.interactionType) {

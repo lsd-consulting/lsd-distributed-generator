@@ -3,9 +3,9 @@ package io.lsdconsulting.lsd.distributed.generator.integration
 import com.lsd.core.IdGenerator
 import com.lsd.core.adapter.puml.*
 import com.lsd.core.domain.Message
-import io.lsdconsulting.lsd.distributed.access.model.InteractionType
-import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction
-import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository
+import io.lsdconsulting.lsd.distributed.connector.model.InteractionType
+import io.lsdconsulting.lsd.distributed.connector.model.InterceptedInteraction
+import io.lsdconsulting.lsd.distributed.connector.repository.InterceptedDocumentRepository
 import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic

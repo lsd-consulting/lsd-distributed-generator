@@ -1,8 +1,8 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram.data
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import io.lsdconsulting.lsd.distributed.access.model.InteractionType.*
-import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction
+import io.lsdconsulting.lsd.distributed.connector.model.InteractionType.*
+import io.lsdconsulting.lsd.distributed.connector.model.InterceptedInteraction
 import lsd.format.Parser
 
 fun buildDataFrom(interceptedInteraction: InterceptedInteraction) =

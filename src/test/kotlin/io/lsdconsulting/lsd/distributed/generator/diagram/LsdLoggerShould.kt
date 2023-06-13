@@ -4,9 +4,9 @@ import com.lsd.core.LsdContext
 import com.lsd.core.builders.MessageBuilder
 import com.lsd.core.domain.Message
 import com.lsd.core.domain.SequenceEvent
-import io.lsdconsulting.lsd.distributed.access.model.InteractionType.RESPONSE
-import io.lsdconsulting.lsd.distributed.access.model.InterceptedInteraction
-import io.lsdconsulting.lsd.distributed.access.repository.InterceptedDocumentRepository
+import io.lsdconsulting.lsd.distributed.connector.model.InteractionType.RESPONSE
+import io.lsdconsulting.lsd.distributed.connector.model.InterceptedInteraction
+import io.lsdconsulting.lsd.distributed.connector.repository.InterceptedDocumentRepository
 import io.lsdconsulting.lsd.distributed.generator.diagram.dto.EventContainer
 import io.mockk.every
 import io.mockk.mockk
