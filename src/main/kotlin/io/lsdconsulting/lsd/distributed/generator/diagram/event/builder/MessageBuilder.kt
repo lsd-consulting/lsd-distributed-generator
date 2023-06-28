@@ -1,21 +1,20 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram.event.builder
 
 import com.lsd.core.builders.MessageBuilder.Companion.messageBuilder
+import com.lsd.core.domain.Message
 import com.lsd.core.domain.MessageType
+import io.lsdconsulting.lsd.distributed.generator.diagram.event.MessageData
 
-fun buildMessage(
-    id: String,
-    label: String,
-    serviceName: String,
-    target: String,
-    colour: String,
-    data: String
-) = messageBuilder()
-    .id(id)
-    .type(MessageType.SYNCHRONOUS)
-    .label(label)
-    .from(serviceName)
-    .to(target)
-    .colour(colour)
-    .data(data)
-    .build()
+fun buildSynchronousMessage(request: MessageData): Message =
+    with(request) {
+        messageBuilder()
+            .id(id)
+            .type(MessageType.SYNCHRONOUS)
+            .label(captured.label)
+            .from(captured.serviceName)
+            .to(captured.target)
+            .colour(captured.colour)
+            .data(captured.data)
+            .duration(captured.duration)
+            .build()
+    }
