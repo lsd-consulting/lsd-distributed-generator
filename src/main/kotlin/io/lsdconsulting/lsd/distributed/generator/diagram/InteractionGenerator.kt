@@ -5,9 +5,11 @@ import io.lsdconsulting.lsd.distributed.connector.model.InterceptedInteraction
 import io.lsdconsulting.lsd.distributed.connector.repository.InterceptedDocumentRepository
 import io.lsdconsulting.lsd.distributed.generator.diagram.data.buildDataFrom
 import io.lsdconsulting.lsd.distributed.generator.diagram.dto.EventContainer
+import io.lsdconsulting.lsd.distributed.generator.diagram.event.CapturedData
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap
 import io.lsdconsulting.lsd.distributed.generator.diagram.label.generateLabel
 import lsd.format.PrettyPrinter
+import java.time.Duration
 
 class InteractionGenerator(
     private val interceptedDocumentRepository: InterceptedDocumentRepository,
@@ -26,14 +28,18 @@ class InteractionGenerator(
     private fun getEvents(
         traceIdToColourMap: Map<String, String?>,
         interactions: List<InterceptedInteraction>
-    ): List<SequenceEvent> = interactions.map { interceptedInteraction: InterceptedInteraction ->
-        val colour = traceIdToColourMap[interceptedInteraction.traceId] ?: NO_COLOUR
-        val data = PrettyPrinter.prettyPrintJson(buildDataFrom(interceptedInteraction))
-        val serviceName = interceptedInteraction.serviceName
-        val target = interceptedInteraction.target
-        val type = interceptedInteraction.interactionType
-        val label = generateLabel(interceptedInteraction)
-        eventBuilderMap.build(type, label, serviceName, target, colour, data)
+    ): List<SequenceEvent> = interactions.map { interaction: InterceptedInteraction ->
+        eventBuilderMap.build(
+            CapturedData(
+                type = interaction.interactionType,
+                label = generateLabel(interaction),
+                serviceName = interaction.serviceName,
+                target = interaction.target,
+                colour = traceIdToColourMap[interaction.traceId] ?: NO_COLOUR,
+                data = PrettyPrinter.prettyPrintJson(buildDataFrom(interaction)),
+                duration = Duration.ofMillis(interaction.elapsedTime)
+            )
+        )
     }
 
     companion object {

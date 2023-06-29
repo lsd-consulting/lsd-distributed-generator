@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
+import java.time.Duration
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
@@ -61,7 +62,7 @@ class LsdLoggerIT {
             target = targetName,
             interactionType = InteractionType.REQUEST,
             elapsedTime = 0,
-            createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
+            createdAt = nowUTC()
         )
         testRepository.save(interceptedInteraction1)
         Thread.sleep(5)
@@ -73,7 +74,7 @@ class LsdLoggerIT {
             serviceName = "TestApp",
             interactionType = InteractionType.PUBLISH,
             elapsedTime = 0,
-            createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
+            createdAt = nowUTC()
         )
         testRepository.save(interceptedInteraction2)
         Thread.sleep(5)
@@ -86,7 +87,7 @@ class LsdLoggerIT {
             interactionType = InteractionType.RESPONSE,
             elapsedTime = 10L,
             httpStatus = "200 OK",
-            createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
+            createdAt = nowUTC()
         )
         testRepository.save(interceptedInteraction3)
         Thread.sleep(5)
@@ -98,7 +99,7 @@ class LsdLoggerIT {
             path = "path",
             interactionType = InteractionType.CONSUME,
             elapsedTime = 0,
-            createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
+            createdAt = nowUTC()
         )
         testRepository.save(interceptedInteraction4)
         Thread.sleep(5)
@@ -111,7 +112,7 @@ class LsdLoggerIT {
             target = "UNKNOWN_TARGET",
             interactionType = InteractionType.REQUEST,
             elapsedTime = 0,
-            createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
+            createdAt = nowUTC()
         )
         testRepository.save(interceptedInteraction5)
         Thread.sleep(5)
@@ -124,7 +125,7 @@ class LsdLoggerIT {
             interactionType = InteractionType.RESPONSE,
             elapsedTime = 20L,
             httpStatus = "200 OK",
-            createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
+            createdAt = nowUTC()
         )
         testRepository.save(interceptedInteraction6)
         Thread.sleep(5)
@@ -143,36 +144,44 @@ class LsdLoggerIT {
                     hasProperty("label", `is`("GET /api-listener?message=from_test")),
                     hasProperty("from", `is`(PARTICIPANT.called(sourceName))),
                     hasProperty("to", `is`(PARTICIPANT.called(targetName))),
-                    hasProperty("colour", `is`("blue"))
+                    hasProperty("colour", `is`("blue")),
+                    hasProperty("duration", `is`(Duration.ofMillis(0))),
                 ), allOf(
                     hasProperty("label", `is`("publish event")),
                     hasProperty("from", `is`(PARTICIPANT.called("TestApp"))),
                     hasProperty("to", `is`(PARTICIPANT.called("SomethingDoneEvent"))),
-                    hasProperty("colour", `is`("green"))
+                    hasProperty("colour", `is`("green")),
+                    hasProperty("duration", `is`(Duration.ofMillis(0))),
                 ), allOf(
                     hasProperty("label", `is`("sync 200 OK response (10 ms)")),
                     hasProperty("from", `is`(PARTICIPANT.called(targetName))),
                     hasProperty("to", `is`(PARTICIPANT.called(sourceName))),
-                    hasProperty("colour", `is`("blue"))
+                    hasProperty("colour", `is`("blue")),
+                    hasProperty("duration", `is`(Duration.ofMillis(10))),
                 ),allOf(
                     hasProperty("label", `is`("consume message")),
                     hasProperty("from", `is`(PARTICIPANT.called("SomethingDoneEvent"))),
                     hasProperty("to", `is`(PARTICIPANT.called("TestApp"))),
-                    hasProperty("colour", `is`("green"))
+                    hasProperty("colour", `is`("green")),
+                    hasProperty("duration", `is`(Duration.ofMillis(0))),
                 ),allOf(
                     hasProperty("label", `is`("POST /external-api?message=from_feign")),
                     hasProperty("from", `is`(PARTICIPANT.called("TestApp"))),
                     hasProperty("to", `is`(PARTICIPANT.called("UNKNOWN_TARGET"))),
-                    hasProperty("colour", `is`("blue"))
+                    hasProperty("colour", `is`("blue")),
+                    hasProperty("duration", `is`(Duration.ofMillis(0))),
                 ),allOf(
                     hasProperty("label", `is`("sync 200 OK response (20 ms)")),
                     hasProperty("from", `is`(PARTICIPANT.called("UNKNOWN_TARGET"))),
                     hasProperty("to", `is`(PARTICIPANT.called("TestApp"))),
-                    hasProperty("colour", `is`("blue"))
+                    hasProperty("colour", `is`("blue")),
+                    hasProperty("duration", `is`(Duration.ofMillis(20))),
                 )
             )
         )
     }
+
+    private fun nowUTC(): ZonedDateTime = ZonedDateTime.now(ZoneId.of("UTC"))
 
     companion object {
         @JvmStatic
