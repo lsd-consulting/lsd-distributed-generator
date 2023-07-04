@@ -31,6 +31,7 @@ class InteractionGenerator(
     ): List<SequenceEvent> = interactions.map { interaction: InterceptedInteraction ->
         eventBuilderMap.build(
             CapturedData(
+                created = interaction.createdAt.toInstant(),
                 type = interaction.interactionType,
                 label = generateLabel(interaction),
                 serviceName = interaction.serviceName,

@@ -8,6 +8,7 @@ import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.buildCon
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.buildSynchronousMessage
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.builder.buildSynchronousResponse
 import java.time.Duration
+import java.time.Instant
 
 
 data class CapturedData(
@@ -17,7 +18,8 @@ data class CapturedData(
     val target: String,
     val colour: String,
     val data: String,
-    val duration: Duration
+    val duration: Duration,
+    val created: Instant
 )
 
 data class MessageData(val id: String, val captured: CapturedData)

@@ -9,6 +9,7 @@ fun buildSynchronousMessage(request: MessageData): Message =
     with(request) {
         messageBuilder()
             .id(id)
+            .created(captured.created)
             .type(MessageType.SYNCHRONOUS)
             .label(captured.label)
             .from(captured.serviceName)

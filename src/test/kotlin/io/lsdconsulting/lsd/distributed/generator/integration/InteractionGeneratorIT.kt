@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
@@ -70,23 +71,23 @@ internal class InteractionGeneratorIT {
     fun `attach timing to correct synchronous responses`() {
         val interceptedInteractions: List<InterceptedInteraction> = listOf(
             InterceptedInteraction(traceId = TRACE_ID, path = "/abc/def1", target = "target1", serviceName = "service",
-                interactionType = InteractionType.REQUEST, httpMethod = "POST", body = "key1=value1;key2=value2", elapsedTime = 0, createdAt = ZonedDateTime.now(
-                    ZoneId.of("UTC"))),
+                interactionType = InteractionType.REQUEST, httpMethod = "POST", body = "key1=value1;key2=value2", elapsedTime = 0, createdAt = nowUtc()
+            ),
             InterceptedInteraction(traceId = TRACE_ID, path = "/abc/def2", target = "target2", serviceName = "service",
-                interactionType = InteractionType.REQUEST, httpMethod = "POST", body = "key1=value1;key2=value2", elapsedTime = 0, createdAt = ZonedDateTime.now(
-                    ZoneId.of("UTC"))),
+                interactionType = InteractionType.REQUEST, httpMethod = "POST", body = "key1=value1;key2=value2", elapsedTime = 0, createdAt = nowUtc()
+            ),
             InterceptedInteraction(traceId = TRACE_ID, target = "exchange", path = "exchange", serviceName = "service",
-                interactionType = InteractionType.PUBLISH, body = "{\"key1\":\"value1\",\"key2\":\"value2\"}", elapsedTime = 0, createdAt = ZonedDateTime.now(
-                    ZoneId.of("UTC"))),
+                interactionType = InteractionType.PUBLISH, body = "{\"key1\":\"value1\",\"key2\":\"value2\"}", elapsedTime = 0, createdAt = nowUtc()
+            ),
             InterceptedInteraction(traceId = TRACE_ID, target = "exchange", path = "exchange", serviceName = "service",
-                interactionType = InteractionType.CONSUME, body = "", elapsedTime = 0, createdAt = ZonedDateTime.now(
-                    ZoneId.of("UTC"))),
+                interactionType = InteractionType.CONSUME, body = "", elapsedTime = 0, createdAt = nowUtc()
+            ),
             InterceptedInteraction(traceId = TRACE_ID, target = "target", path = "target", serviceName = "service",
-                interactionType = InteractionType.RESPONSE, httpStatus = "200", body = "someValue", elapsedTime = 25L, createdAt = ZonedDateTime.now(
-                    ZoneId.of("UTC"))),
+                interactionType = InteractionType.RESPONSE, httpStatus = "200", body = "someValue", elapsedTime = 25L, createdAt = nowUtc()
+            ),
             InterceptedInteraction(traceId = TRACE_ID, target = "target", path = "target", serviceName = "service",
-                interactionType = InteractionType.RESPONSE, httpStatus = "200", body = "someValue", elapsedTime = 35L, createdAt = ZonedDateTime.now(
-                    ZoneId.of("UTC")))
+                interactionType = InteractionType.RESPONSE, httpStatus = "200", body = "someValue", elapsedTime = 35L, createdAt = nowUtc()
+            )
         )
         given(interceptedDocumentRepository.findByTraceIds(TRACE_ID)).willReturn(interceptedInteractions)
 
@@ -104,6 +105,28 @@ internal class InteractionGeneratorIT {
                 containsString("(35 ms)")
             )
         )
+    }
+
+    @ParameterizedTest
+    @EnumSource(InteractionType::class)
+    fun `map createdAt timestamp to created instant`(type: InteractionType) {
+        val createdAt = nowUtc()
+        given(interceptedDocumentRepository.findByTraceIds(TRACE_ID))
+            .willReturn(listOf(InterceptedInteraction(
+                        traceId = TRACE_ID,
+                        interactionType = type,
+                        createdAt = createdAt,
+                        path = randomAlphabetic(5),
+                        target = randomAlphabetic(5),
+                        serviceName = randomAlphabetic(5),
+                        elapsedTime = 0,
+                    ),
+                )
+            )
+
+        val sequenceEvent = underTest.generate(mapOf(TRACE_ID to null)).events.single()
+
+        assertThat(sequenceEvent.created, equalTo(createdAt.toInstant()))
     }
 
     @Test
@@ -238,12 +261,14 @@ internal class InteractionGeneratorIT {
             path = "target",
             interactionType = type,
             elapsedTime = 0,
-            createdAt = ZonedDateTime.now(ZoneId.of("UTC"))
+            createdAt = nowUtc()
         )
     }
 
     companion object {
         private val TRACE_ID = randomAlphabetic(10)
+
+        private fun nowUtc(): ZonedDateTime = ZonedDateTime.now(ZoneId.of("UTC"))
 
         @JvmStatic
         private fun provideInterceptedInteractions(): Stream<Arguments> {
@@ -251,40 +276,44 @@ internal class InteractionGeneratorIT {
                 Arguments.of(
                     InterceptedInteraction(traceId = TRACE_ID, path = "/abc/def", target = "target", serviceName = "service",
                         interactionType = InteractionType.REQUEST, httpMethod = "POST", body = "key1=value1;key2=value2", elapsedTime = 0,
-                        createdAt = ZonedDateTime.now(ZoneId.of("UTC"))),
+                        createdAt = nowUtc()
+                    ),
                     "Service -[#grey]> Target: <text fill=\"grey\">[[#1 {POST /abc/def} POST /abc/def]]</text>",
                     "{\n  \"body\": \"key1=value1;key2=value2\"\n}"
                 ),
                 Arguments.of(
                     InterceptedInteraction(traceId = TRACE_ID, path = "/abc/def", target = "target", serviceName = "service",
                         interactionType = InteractionType.REQUEST, httpMethod = "POST",
-                        body = "{\"key1\":\"value1\",\"key2\":\"value2\"}", elapsedTime = 0, createdAt = ZonedDateTime.now(
-                            ZoneId.of("UTC"))),
+                        body = "{\"key1\":\"value1\",\"key2\":\"value2\"}", elapsedTime = 0, createdAt = nowUtc()
+                    ),
                     "Service -[#grey]> Target: <text fill=\"grey\">[[#1 {POST /abc/def} POST /abc/def]]</text>",
                     "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"
                 ),
                 Arguments.of(
                     InterceptedInteraction(traceId = TRACE_ID, path = "/abc/defghi", target = "target", serviceName = "service",
                         interactionType = InteractionType.RESPONSE, httpStatus = "200", body = "someValue", elapsedTime = 2L,
-                        createdAt = ZonedDateTime.now(ZoneId.of("UTC"))),
+                        createdAt = nowUtc()
+                    ),
                     "Target --[#grey]> Service: <text fill=\"grey\">[[#1 {sync 200 response (2 ms)} sync 200 response (2 ms)]]</text>",
                     "{\n  \"body\": \"someValue\"\n}"
                 ),
                 Arguments.of(
                     InterceptedInteraction(traceId = TRACE_ID, target = "exchange", path = "exchange", serviceName = "service",
                         interactionType = InteractionType.PUBLISH, body = "{\"key1\":\"value1\",\"key2\":\"value2\"}", elapsedTime = 0,
-                        createdAt = ZonedDateTime.now(ZoneId.of("UTC"))),
+                        createdAt = nowUtc()
+                    ),
                     "Service -[#grey]> Exchange: <text fill=\"grey\">[[#1 {publish event} publish event]]</text>",
                     "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"
                 ),
                 Arguments.of(
                     InterceptedInteraction(traceId = TRACE_ID, target = "exchange", path = "exchange", serviceName = "service",
-                        interactionType = InteractionType.CONSUME, body = "",  elapsedTime = 0, createdAt = ZonedDateTime.now(
-                            ZoneId.of("UTC"))),
+                        interactionType = InteractionType.CONSUME, body = "",  elapsedTime = 0, createdAt = nowUtc()
+                    ),
                     "Exchange -[#grey]> Service: <text fill=\"grey\">[[#1 {consume message} consume message]]</text>",
                     "{\n  \"body\": \"\"\n}"
                 )
             )
         }
     }
+
 }
