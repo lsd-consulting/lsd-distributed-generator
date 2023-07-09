@@ -8,7 +8,7 @@ import io.lsdconsulting.lsd.distributed.generator.diagram.dto.EventContainer
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.CapturedData
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap
 import io.lsdconsulting.lsd.distributed.generator.diagram.label.generateLabel
-import lsd.format.PrettyPrinter
+import lsd.format.prettyPrint
 import java.time.Duration
 
 class InteractionGenerator(
@@ -37,7 +37,7 @@ class InteractionGenerator(
                 serviceName = interaction.serviceName,
                 target = interaction.target,
                 colour = traceIdToColourMap[interaction.traceId] ?: NO_COLOUR,
-                data = PrettyPrinter.prettyPrintJson(buildDataFrom(interaction)),
+                data = prettyPrint(buildDataFrom(interaction)),
                 duration = Duration.ofMillis(interaction.elapsedTime)
             )
         )

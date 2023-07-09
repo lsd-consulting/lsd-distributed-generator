@@ -3,7 +3,7 @@ package io.lsdconsulting.lsd.distributed.generator.diagram.data
 import com.fasterxml.jackson.annotation.JsonInclude
 import io.lsdconsulting.lsd.distributed.connector.model.InteractionType.*
 import io.lsdconsulting.lsd.distributed.connector.model.InterceptedInteraction
-import lsd.format.Parser
+import lsd.format.convertJsonStringToMap
 
 fun buildDataFrom(interceptedInteraction: InterceptedInteraction) =
     InteractionData(
@@ -17,10 +17,7 @@ fun buildDataFrom(interceptedInteraction: InterceptedInteraction) =
         body = (generateBody(interceptedInteraction.body))
     )
 
-private fun generateBody(body: String?): Any? {
-    val bodyMap = Parser.parse(body)
-    return if (bodyMap.isEmpty()) body else bodyMap
-}
+private fun generateBody(body: String?): Any? = convertJsonStringToMap(body).ifEmpty { body }
 
 data class InteractionData(
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
