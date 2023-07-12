@@ -6,13 +6,12 @@ pitest {
     useClasspathFile = true
     timeoutConstInMillis = 20000
     targetClasses = ['io.lsdconsulting.lsd.distributed.generator*']
-    excludedTestClasses = [
-            'io.lsdconsulting.lsd.distributed.generator.integration.LsdLoggerIT'
-    ]
+    excludedTestClasses = ['io.lsdconsulting.lsd.distributed.generator.integration.LsdLoggerIT']
     excludedClasses = [ 'io.lsdconsulting.lsd.distributed.generator.config.*']
+    testSourceSets = [sourceSets.test, sourceSets.mongoIntegrationTest]
     threads = 4
     outputFormats = ['HTML']
     coverageThreshold = 99
-    mutationThreshold = 87
-    testStrengthThreshold = 87
+    mutationThreshold = 89
+    testStrengthThreshold = 89
 }
