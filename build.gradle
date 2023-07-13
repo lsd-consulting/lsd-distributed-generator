@@ -45,6 +45,7 @@ dependencyManagement {
 
 apply from: 'dependencies.gradle'
 apply from: 'mongoIntegrationTest.gradle'
+apply from: 'postgresIntegrationTest.gradle'
 apply from: 'publishing.gradle'
 apply from: 'test.gradle'
 apply from: 'pitest.gradle'

@@ -1,0 +1,63 @@
+sourceSets {
+    postgresIntegrationTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/postgresIntegrationTest/java')
+        }
+    }
+}
+
+configurations {
+    postgresIntegrationTestImplementation.extendsFrom implementation
+}
+
+dependencies {
+    // Spring
+    postgresIntegrationTestImplementation("org.springframework.boot:spring-boot-starter-web")
+    postgresIntegrationTestImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    postgresIntegrationTestImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "junit", module: "junit"
+        exclude group: "org.mockito", module: "mockito-core"
+    }
+
+    // Lsd
+    postgresIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-postgres-connector:1.0.0-3-g1603dae.dirty'
+
+    // Db
+//    postgresIntegrationTestImplementation "io.zonky.test:embedded-database-spring-test:2.3.0"
+//    postgresIntegrationTestImplementation "io.zonky.test:embedded-postgres:2.0.4"
+    postgresIntegrationTestImplementation 'com.zaxxer:HikariCP:5.0.1'
+    postgresIntegrationTestImplementation "org.testcontainers:postgresql:1.18.3"
+    postgresIntegrationTestImplementation "org.testcontainers:junit-jupiter:1.18.3"
+    postgresIntegrationTestImplementation "org.testcontainers:postgresql:1.18.3"
+
+    // Other
+    postgresIntegrationTestImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+    postgresIntegrationTestImplementation 'io.mockk:mockk-jvm:1.13.5'
+    postgresIntegrationTestImplementation 'org.apache.commons:commons-lang3:3.12.0'
+}
+
+tasks.register('postgresIntegrationTest', Test) {
+    useJUnitPlatform()
+    dependsOn assemble
+
+    testClassesDirs = sourceSets.postgresIntegrationTest.output.classesDirs
+    classpath = sourceSets.postgresIntegrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+    testLogging.showStandardStreams = true
+    mustRunAfter(test)
+}
+
+check.dependsOn(postgresIntegrationTest)
+
+postgresIntegrationTest {
+    afterSuite { desc, result ->
+        if (!desc.parent) {
+            logger.lifecycle("Postgres integration test results: (${result.testCount} features, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)")
+            if (result.testCount == 0) {
+                throw new IllegalStateException("No tests were found. Failing the build")
+            }
+        }
+    }
+}

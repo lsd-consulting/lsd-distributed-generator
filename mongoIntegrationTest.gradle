@@ -23,18 +23,12 @@ dependencies {
     // Lsd
     mongoIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-mongodb-connector:5.0.0'
 
-    // jUnit
-    mongoIntegrationTestImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
-
     // Db
-//    mongoIntegrationTestImplementation "io.zonky.test:embedded-database-spring-test:2.3.0"
-//    mongoIntegrationTestImplementation "io.zonky.test:embedded-postgres:2.0.4"
     mongoIntegrationTestImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.5.4'
 
     // Other
+    mongoIntegrationTestImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
     mongoIntegrationTestImplementation 'io.mockk:mockk-jvm:1.13.5'
-    mongoIntegrationTestImplementation 'org.mockito:mockito-core:5.4.0'
-
 }
 
 tasks.register('mongoIntegrationTest', Test) {

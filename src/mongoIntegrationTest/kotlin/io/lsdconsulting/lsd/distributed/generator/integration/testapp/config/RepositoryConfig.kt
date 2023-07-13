@@ -15,6 +15,7 @@ open class RepositoryConfig {
 
     companion object {
         // This is because the configs in spring.factories run always before any test configs.
+        // This way we set up the test db before the configs from spring.factories run
         init {
             setupDatabase()
         }
