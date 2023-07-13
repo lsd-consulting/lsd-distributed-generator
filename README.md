@@ -25,10 +25,16 @@ It also generates a component diagram:
 
 # Usage
 
-To use the `lsd-distributed-generator` library just add it to the dependencies:
+To use the `lsd-distributed-generator` library, just add the following dependencies to your project, depending on which connector you want to use:
 
 ```groovy
 implementation "io.github.lsd-consulting:lsd-distributed-generator:+"
+implementation "io.github.lsd-consulting:lsd-distributed-mongodb-connector:+"
 ```
+and set the [MongoDB connector's properties](https://github.com/lsd-consulting/lsd-distributed-mongodb-connector#properties), or
 
-and set the [connector's properties](https://github.com/lsd-consulting/lsd-distributed-mongodb-access#properties).
+```groovy
+implementation "io.github.lsd-consulting:lsd-distributed-generator:+"
+implementation "io.github.lsd-consulting:lsd-distributed-postgres-connector:+"
+```
+and set the [PostgreSQL connector's properties](https://github.com/lsd-consulting/lsd-distributed-postgres-connector#properties).
