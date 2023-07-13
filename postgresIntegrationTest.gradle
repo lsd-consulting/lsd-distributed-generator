@@ -22,11 +22,9 @@ dependencies {
     }
 
     // Lsd
-    postgresIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-postgres-connector:1.0.0-3-g1603dae.dirty'
+    postgresIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-postgres-connector:1.0.1'
 
     // Db
-//    postgresIntegrationTestImplementation "io.zonky.test:embedded-database-spring-test:2.3.0"
-//    postgresIntegrationTestImplementation "io.zonky.test:embedded-postgres:2.0.4"
     postgresIntegrationTestImplementation 'com.zaxxer:HikariCP:5.0.1'
     postgresIntegrationTestImplementation "org.testcontainers:postgresql:1.18.3"
     postgresIntegrationTestImplementation "org.testcontainers:junit-jupiter:1.18.3"
