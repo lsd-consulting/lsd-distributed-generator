@@ -22,7 +22,7 @@ dependencies {
     }
 
     // Lsd
-    postgresIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-postgres-connector:1.0.1'
+    postgresIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-postgres-connector:1.0.3'
 
     // Db
     postgresIntegrationTestImplementation 'com.zaxxer:HikariCP:5.0.1'
