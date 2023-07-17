@@ -37,8 +37,8 @@ import java.util.*
 
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = [TestApplication::class])
-@ActiveProfiles("test2")
-class LsdLoggerIT2 {
+@ActiveProfiles("lsd-datasource")
+class LsdLoggerWithLsdDataSourceIT {
 
     @Autowired
     private lateinit var interceptedDocumentPostgresRepository: InterceptedDocumentPostgresRepository

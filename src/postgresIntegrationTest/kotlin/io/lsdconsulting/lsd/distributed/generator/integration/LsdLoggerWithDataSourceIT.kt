@@ -31,8 +31,8 @@ import java.util.*
 import javax.sql.DataSource
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = [TestApplication::class])
-@ActiveProfiles("test")
-class LsdLoggerIT {
+@ActiveProfiles("spring-datasource")
+class LsdLoggerWithDataSourceIT {
 
     @Autowired
     private lateinit var interceptedDocumentPostgresRepository: InterceptedDocumentPostgresRepository
@@ -56,7 +56,7 @@ class LsdLoggerIT {
     private lateinit var underTest: LsdLogger
 
     companion object {
-        var postgreSQLContainer = PostgreSQLContainer("postgres:13-alpine")
+        private var postgreSQLContainer= PostgreSQLContainer("postgres:13-alpine")
             .withDatabaseName("lsd_database")
             .withUsername("sa")
             .withPassword("sa")
