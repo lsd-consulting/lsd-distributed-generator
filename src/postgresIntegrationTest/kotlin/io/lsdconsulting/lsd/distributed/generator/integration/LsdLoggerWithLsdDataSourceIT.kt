@@ -33,6 +33,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 import java.time.Duration
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 
@@ -227,5 +228,5 @@ class LsdLoggerWithLsdDataSourceIT {
         )
     }
 
-    private fun nowUTC(): ZonedDateTime = ZonedDateTime.now(ZoneId.of("UTC"))
+    private fun nowUTC(): ZonedDateTime = ZonedDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MILLIS)
 }
