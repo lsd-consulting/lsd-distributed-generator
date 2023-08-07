@@ -1,8 +1,11 @@
 package io.lsdconsulting.lsd.distributed.generator.diagram.render
 
 import io.lsdconsulting.lsd.distributed.connector.model.InteractionType
+import io.lsdconsulting.lsd.distributed.connector.model.InteractionType.*
 import j2html.TagCreator
 import lsd.format.prettyPrint
+
+private val EVENT_BASED_INTERACTIONS = listOf(CONSUME, PUBLISH)
 
 fun renderHtmlFor(
     path: String,
@@ -17,19 +20,19 @@ fun renderHtmlFor(
             TagCreator.h3("Full Path"),
             TagCreator.span(path)
         ),
-        if (type == InteractionType.REQUEST) {
+        if (type == REQUEST) {
             if (requestHeaders.isEmpty()) TagCreator.p() else TagCreator.section(
                 TagCreator.h3("Request Headers"),
                 TagCreator.p(prettyPrint(requestHeaders))
             )
         } else TagCreator.p(),
-        if (type == InteractionType.RESPONSE) {
+        if (type == RESPONSE) {
             if (responseHeaders.isEmpty()) TagCreator.p() else TagCreator.section(
                 TagCreator.h3("Response Headers"),
                 TagCreator.p(prettyPrint(responseHeaders))
             )
         } else TagCreator.p(),
-        if (type in listOf(InteractionType.CONSUME, InteractionType.PUBLISH)) {
+        if (type in EVENT_BASED_INTERACTIONS) {
             if (requestHeaders.isEmpty()) TagCreator.p() else TagCreator.section(
                 TagCreator.h3("Headers"),
                 TagCreator.p(prettyPrint(requestHeaders))
@@ -39,7 +42,7 @@ fun renderHtmlFor(
             TagCreator.h3("Body"),
             TagCreator.p(prettyBody),
         ),
-        if (type == InteractionType.RESPONSE) TagCreator.section(
+        if (type == RESPONSE) TagCreator.section(
             TagCreator.h3("Duration"),
             TagCreator.p("${duration}ms")
         ) else TagCreator.p()
