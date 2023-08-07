@@ -334,9 +334,8 @@ internal class InteractionGeneratorIT {
         val interactionNames = underTest.generate(mapOf(TRACE_ID to null)).events
 
         val body = (interactionNames[0] as Message).data as String
-        assertThat(body, containsString("requestHeaders"))
-        assertThat(body, not(containsString("responseHeaders")))
-        assertThat(body, not(containsString("headers")))
+        assertThat(body, containsString("Request Headers"))
+        assertThat(body, not(containsString("Response Headers")))
     }
 
     @Test
@@ -351,9 +350,8 @@ internal class InteractionGeneratorIT {
         val interactionNames = underTest.generate(mapOf(TRACE_ID to null)).events
 
         val body = (interactionNames[0] as Message).data as String
-        assertThat(body, containsString("responseHeaders"))
-        assertThat(body, not(containsString("requestHeaders")))
-        assertThat(body, not(containsString("headers")))
+        assertThat(body, containsString("Response Headers"))
+        assertThat(body, not(containsString("Request Headers")))
     }
 
     @Test
@@ -368,9 +366,9 @@ internal class InteractionGeneratorIT {
         val interactionNames = underTest.generate(mapOf(TRACE_ID to null)).events
 
         val body = (interactionNames[0] as Message).data as String
-        assertThat(body, containsString("headers"))
-        assertThat(body, not(containsString("responseHeaders")))
-        assertThat(body, not(containsString("requestHeaders")))
+        assertThat(body, containsString("Headers"))
+        assertThat(body, not(containsString("Response Headers")))
+        assertThat(body, not(containsString("Request Headers")))
     }
 
     private fun buildInterceptedInteraction(
@@ -412,7 +410,7 @@ internal class InteractionGeneratorIT {
                         createdAt = nowUtc()
                     ),
                     "Service -[#grey]> Target: <text fill=\"grey\">[[#1 {POST /abc/def} POST /abc/def]]</text>",
-                    "{\n  \"body\": \"key1=value1;key2=value2\"\n}"
+                    "<div><section><h3>Full Path</h3><span>/abc/def</span></section><p></p><p></p><p></p><section><h3>Body</h3><p>key1=value1;key2=value2</p></section><p></p></div>"
                 ),
                 Arguments.of(
                     InterceptedInteraction(
@@ -421,7 +419,7 @@ internal class InteractionGeneratorIT {
                         body = "{\"key1\":\"value1\",\"key2\":\"value2\"}", elapsedTime = 0, createdAt = nowUtc()
                     ),
                     "Service -[#grey]> Target: <text fill=\"grey\">[[#1 {POST /abc/def} POST /abc/def]]</text>",
-                    "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"
+                    "<div><section><h3>Full Path</h3><span>/abc/def</span></section><p></p><p></p><p></p><section><h3>Body</h3><p>{\n  &quot;key1&quot;: &quot;value1&quot;,\n  &quot;key2&quot;: &quot;value2&quot;\n}</p></section><p></p></div>"
                 ),
                 Arguments.of(
                     InterceptedInteraction(
@@ -436,7 +434,7 @@ internal class InteractionGeneratorIT {
                         createdAt = nowUtc()
                     ),
                     "Target --[#grey]> Service: <text fill=\"grey\">[[#1 {sync 200 response (2 ms)} sync 200 response (2 ms)]]</text>",
-                    "{\n  \"body\": \"someValue\"\n}"
+                    "<div><section><h3>Full Path</h3><span>/abc/defghi</span></section><p></p><p></p><p></p><section><h3>Body</h3><p>someValue</p></section><section><h3>Duration</h3><p>2ms</p></section></div>"
                 ),
                 Arguments.of(
                     InterceptedInteraction(
@@ -450,7 +448,7 @@ internal class InteractionGeneratorIT {
                         createdAt = nowUtc()
                     ),
                     "Service -[#grey]> Exchange: <text fill=\"grey\">[[#1 {publish event} publish event]]</text>",
-                    "{\n  \"body\": {\n    \"key1\": \"value1\",\n    \"key2\": \"value2\"\n  }\n}"
+                    "<div><section><h3>Full Path</h3><span>exchange</span></section><p></p><p></p><p></p><section><h3>Body</h3><p>{\n  &quot;key1&quot;: &quot;value1&quot;,\n  &quot;key2&quot;: &quot;value2&quot;\n}</p></section><p></p></div>"
                 ),
                 Arguments.of(
                     InterceptedInteraction(
@@ -458,7 +456,7 @@ internal class InteractionGeneratorIT {
                         interactionType = InteractionType.CONSUME, body = "", elapsedTime = 0, createdAt = nowUtc()
                     ),
                     "Exchange -[#grey]> Service: <text fill=\"grey\">[[#1 {consume message} consume message]]</text>",
-                    "{\n  \"body\": \"\"\n}"
+                    "<div><section><h3>Full Path</h3><span>exchange</span></section><p></p><p></p><p></p><p></p><p></p></div>"
                 )
             )
         }

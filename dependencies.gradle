@@ -3,7 +3,7 @@ dependencies {
     // LSD
     api 'io.github.lsd-consulting:lsd-core:6.1.0'
     api 'io.github.lsd-consulting:lsd-distributed-connector:2.0.0'
-    implementation 'io.github.lsd-consulting:lsd-formatting-library:3.0.1'
+    implementation 'io.github.lsd-consulting:lsd-formatting-library:4.0.0'
 
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter'
@@ -11,4 +11,5 @@ dependencies {
     // Other
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.3'
+    implementation 'com.j2html:j2html:1.5.0'
 }
