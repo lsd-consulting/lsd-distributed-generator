@@ -1,9 +1,9 @@
 dependencies {
 
     // LSD
-    api 'io.github.lsd-consulting:lsd-core:6.1.0'
+    api 'io.github.lsd-consulting:lsd-core:6.1.1'
     api 'io.github.lsd-consulting:lsd-distributed-connector:2.0.0'
-    implementation 'io.github.lsd-consulting:lsd-formatting-library:4.0.0'
+    implementation 'io.github.lsd-consulting:lsd-formatting-library:4.0.2'
 
     // Spring
     implementation 'org.springframework.boot:spring-boot-starter'
