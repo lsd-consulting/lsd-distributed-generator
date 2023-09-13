@@ -5,11 +5,15 @@ import com.lsd.core.LsdContext
 import com.lsd.core.properties.LsdProperties
 import io.lsdconsulting.lsd.distributed.connector.repository.InterceptedDocumentRepository
 import io.lsdconsulting.lsd.distributed.generator.diagram.event.EventBuilderMap
+import io.lsdconsulting.lsd.distributed.http.config.CONNECTION_TIMEOUT_MILLIS_DEFAULT
 import io.lsdconsulting.lsd.distributed.http.repository.InterceptedDocumentHttpRepository
+import io.lsdconsulting.lsd.distributed.mongo.repository.DEFAULT_COLLECTION_SIZE_LIMIT_MBS
+import io.lsdconsulting.lsd.distributed.mongo.repository.DEFAULT_TIMEOUT_MILLIS
 import io.lsdconsulting.lsd.distributed.mongo.repository.InterceptedDocumentMongoRepository
 import io.lsdconsulting.lsd.distributed.mongo.repository.InterceptedInteractionCollectionBuilder
 import io.lsdconsulting.lsd.distributed.postgres.repository.InterceptedDocumentPostgresRepository
 import lsd.format.json.createObjectMapper
+import java.lang.Boolean.FALSE
 
 class LsdLogger(
     private val interactionGenerator: InteractionGenerator
@@ -27,22 +31,44 @@ class LsdLogger(
     }
 
     companion object {
-        fun instance() : LsdLogger {
+        fun instance(): LsdLogger {
             val connectionString = LsdProperties["lsd.dist.connectionString"]
-            val repository: InterceptedDocumentRepository = when {
-                connectionString.startsWith("jdbc:postgresql://") -> InterceptedDocumentPostgresRepository(connectionString, createObjectMapper())
-                connectionString.startsWith("mongodb://") -> InterceptedDocumentMongoRepository(
-                    InterceptedInteractionCollectionBuilder(connectionString, null, null, LsdProperties.getInt("lsd.dist.db.connectionTimeout.millis"),
-                        LsdProperties.getInt("lsd.dist.db.collectionSizeLimit.megabytes").toLong()
-                    )
-                )
-                connectionString.startsWith("http") -> InterceptedDocumentHttpRepository(connectionString, LsdProperties.getInt("lsd.dist.http.connectionTimeout.millis"), createObjectMapper())
-                else -> throw IllegalArgumentException("Wrong connectionString value!")
-            }
-            val idGenerator = IdGenerator(LsdProperties.getBoolean("lsd.core.ids.deterministic"))
+            val repository = buildInterceptedDocumentRepository(connectionString)
+            val idGenerator = IdGenerator(LsdProperties.getBoolean("lsd.core.ids.deterministic", FALSE))
             val eventBuilderMap = EventBuilderMap(idGenerator)
             val interactionGenerator = InteractionGenerator(repository, eventBuilderMap)
             return LsdLogger(interactionGenerator)
+        }
+
+        private fun buildInterceptedDocumentRepository(connectionString: String): InterceptedDocumentRepository {
+            val repository: InterceptedDocumentRepository = when {
+                connectionString.startsWith("jdbc:postgresql://") -> InterceptedDocumentPostgresRepository(
+                    connectionString,
+                    createObjectMapper()
+                )
+
+                connectionString.startsWith("mongodb://") -> InterceptedDocumentMongoRepository(
+                    InterceptedInteractionCollectionBuilder(
+                        connectionString,
+                        null,
+                        null,
+                        LsdProperties.getInt("lsd.dist.db.connectionTimeout.millis", DEFAULT_TIMEOUT_MILLIS),
+                        LsdProperties.getLong(
+                            "lsd.dist.db.collectionSizeLimit.megabytes",
+                            DEFAULT_COLLECTION_SIZE_LIMIT_MBS
+                        )
+                    )
+                )
+
+                connectionString.startsWith("http") -> InterceptedDocumentHttpRepository(
+                    connectionString,
+                    LsdProperties.getInt("lsd.dist.http.connectionTimeout.millis", CONNECTION_TIMEOUT_MILLIS_DEFAULT),
+                    createObjectMapper()
+                )
+
+                else -> throw IllegalArgumentException("Wrong connectionString value!")
+            }
+            return repository
         }
     }
 }
