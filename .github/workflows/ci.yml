@@ -4,7 +4,14 @@
 #  https://github.com/marketplace/actions/action-for-semantic-release
 
 name: CI
-on: [ push, pull_request ]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, edited, reopened]
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -39,10 +46,10 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v3
+        uses: cycjimmy/semantic-release-action@v4
         id: semantic
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
       - name: Publish to Sonatype
         if: steps.semantic.outputs.new_release_published == 'true'
         env:
