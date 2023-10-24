@@ -3,7 +3,7 @@ dependencies {
     // LSD
     api 'io.github.lsd-consulting:lsd-core:6.1.7'
     api 'io.github.lsd-consulting:lsd-distributed-connector:2.0.0'
-    implementation 'io.github.lsd-consulting:lsd-formatting-library:4.0.4'
+    implementation 'io.github.lsd-consulting:lsd-formatting-library:4.0.5'
     compileOnly 'io.github.lsd-consulting:lsd-distributed-mongodb-connector:5.0.1'
     compileOnly 'io.github.lsd-consulting:lsd-distributed-postgres-connector:1.0.4'
     compileOnly 'io.github.lsd-consulting:lsd-distributed-http-connector:3.0.4'
