@@ -1,7 +1,6 @@
 name: Auto merge lsd-dependency updates
 on:
   pull_request_target:
-    types: [opened, reopened]
     branches:
       - main
 jobs:
