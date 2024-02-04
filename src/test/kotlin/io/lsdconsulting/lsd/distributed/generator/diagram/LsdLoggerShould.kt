@@ -42,7 +42,7 @@ class LsdLoggerShould {
         every { interceptedDocumentRepository.findByTraceIds(traceId) } returns listOf(randomInteraction())
         every { interceptedDocumentRepository.findByTraceIds(secondaryTraceId) } returns listOf(randomInteraction())
         every { interactionGenerator.generate(any()) } returns EventContainer(events = listOf(message, message))
-        
+
         underTest.captureInteractionsFromDatabase(
             lsdContext = lsdContext,
             traceIdToColourMap = mapOf(

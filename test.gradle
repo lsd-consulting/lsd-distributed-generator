@@ -1,16 +1,16 @@
 dependencies {
-    testImplementation 'io.mockk:mockk-jvm:1.13.5'
-    testImplementation 'org.pitest:pitest-junit5-plugin:0.15'
+    testImplementation 'io.mockk:mockk-jvm:1.13.9'
+    testImplementation 'org.pitest:pitest-junit5-plugin:1.1.2'
     testImplementation 'org.jeasy:easy-random-core:5.0.0'
     testImplementation 'org.hamcrest:hamcrest-core:2.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
     testImplementation 'org.apache.commons:commons-lang3:3.12.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.9.3'
 }
 
 test {
     useJUnitPlatform()
     testLogging.events("skipped", "failed")
-    systemProperty("lsd.core.report.outputDir", "$buildDir/reports/lsd")
     finalizedBy jacocoTestReport
     afterSuite { desc, result ->
         if (!desc.parent) {
