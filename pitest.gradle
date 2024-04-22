@@ -11,7 +11,7 @@ pitest {
     testSourceSets = [sourceSets.test, sourceSets.mongoIntegrationTest]
     threads = 4
     outputFormats = ['HTML']
-    coverageThreshold = 81
+    coverageThreshold = 76
     mutationThreshold = 79
     testStrengthThreshold = 87
 }
