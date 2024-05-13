@@ -41,7 +41,7 @@ class LsdLogger(
             return LsdLogger(interactionGenerator)
         }
 
-        private fun buildInterceptedDocumentRepository(connectionString: String): InterceptedDocumentRepository {
+        fun buildInterceptedDocumentRepository(connectionString: String): InterceptedDocumentRepository {
             val repository: InterceptedDocumentRepository = when {
                 connectionString.startsWith("jdbc:postgresql://") -> InterceptedDocumentPostgresRepository(
                     connectionString,
