@@ -9,12 +9,13 @@ import io.lsdconsulting.lsd.distributed.generator.diagram.InteractionGenerator
 import io.lsdconsulting.lsd.distributed.generator.diagram.LsdLogger
 import io.lsdconsulting.lsd.distributed.generator.integration.testapp.TestApplication
 import io.lsdconsulting.lsd.distributed.generator.integration.testapp.config.RepositoryConfig
+import io.lsdconsulting.lsd.distributed.generator.integration.testapp.repository.TestContainersMongoTest
 import io.lsdconsulting.lsd.distributed.generator.integration.testapp.repository.TestRepository
 import io.mockk.*
 import org.apache.commons.lang3.RandomStringUtils
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
-import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,17 +31,18 @@ import java.util.*
 @Import(RepositoryConfig::class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = [TestApplication::class])
 @ActiveProfiles("test")
-class LsdLoggerIT {
+class LsdLoggerIT: TestContainersMongoTest() {
+
     @Autowired
     private lateinit var testRepository: TestRepository
 
     @Autowired
     private lateinit var interactionGenerator: InteractionGenerator
 
-    private val setupTraceId = RandomStringUtils.randomAlphanumeric(10)
-    private val mainTraceId = RandomStringUtils.randomAlphanumeric(10)
-    private val sourceName = RandomStringUtils.randomAlphanumeric(10).uppercase(Locale.getDefault())
-    private val targetName = RandomStringUtils.randomAlphanumeric(10).uppercase(Locale.getDefault())
+    private val setupTraceId = RandomStringUtils.secure().nextAlphanumeric(10)
+    private val mainTraceId = RandomStringUtils.secure().nextAlphanumeric(10)
+    private val sourceName = RandomStringUtils.secure().nextAlphanumeric(10).uppercase(Locale.getDefault())
+    private val targetName = RandomStringUtils.secure().nextAlphanumeric(10).uppercase(Locale.getDefault())
     private val sequenceEventSlot = ArrayList<SequenceEvent>()
     private val lsdContext = spyk(LsdContext())
 
@@ -50,6 +52,11 @@ class LsdLoggerIT {
     fun setup() {
         underTest = LsdLogger(interactionGenerator)
         every { lsdContext.capture(capture(sequenceEventSlot)) } just Runs
+    }
+
+    @AfterEach
+    fun tearDown() {
+        testRepository.deleteAll()
     }
 
     @Test
@@ -182,12 +189,4 @@ class LsdLoggerIT {
     }
 
     private fun nowUTC(): ZonedDateTime = ZonedDateTime.now(ZoneId.of("UTC"))
-
-    companion object {
-        @JvmStatic
-        @AfterAll
-        fun tearDown() {
-            TestRepository.tearDownDatabase()
-        }
-    }
 }
