@@ -70,7 +70,7 @@ class LsdLoggerWithLsdDataSourceIT {
             .withExposedPorts(5432)
             .withCreateContainerCmdModifier { cmd ->
                 cmd.withHostConfig(
-                    HostConfig().withPortBindings(PortBinding(Ports.Binding.bindPort(5432), ExposedPort(5432)))
+                    HostConfig().withPortBindings(PortBinding(Ports.Binding.bindPort(5433), ExposedPort(5432)))
                 )
             }
 
