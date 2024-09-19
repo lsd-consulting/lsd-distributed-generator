@@ -64,7 +64,7 @@ class LsdLogger(
                         connectionString,
                         null,
                         null,
-                        LsdProperties.getInt("lsd.dist.db.connectionTimeout.millis", DEFAULT_TIMEOUT_MILLIS),
+                        LsdProperties.getLong("lsd.dist.db.connectionTimeout.millis", DEFAULT_TIMEOUT_MILLIS),
                         LsdProperties.getLong("lsd.dist.db.collectionSizeLimit.megabytes", DEFAULT_COLLECTION_SIZE_LIMIT_MBS),
                     )
                 )
