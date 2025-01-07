@@ -1,12 +1,12 @@
 dependencies {
 
     // LSD
-    api 'io.github.lsd-consulting:lsd-core:7.0.48'
+    api 'io.github.lsd-consulting:lsd-core:7.0.58'
     api 'io.github.lsd-consulting:lsd-distributed-connector:2.0.11'
     implementation 'io.github.lsd-consulting:lsd-formatting-library:4.0.62'
-    compileOnly 'io.github.lsd-consulting:lsd-distributed-mongodb-connector:6.1.6'
-    compileOnly 'io.github.lsd-consulting:lsd-distributed-postgres-connector:3.1.6'
-    compileOnly 'io.github.lsd-consulting:lsd-distributed-http-connector:4.0.38'
+    compileOnly 'io.github.lsd-consulting:lsd-distributed-mongodb-connector:6.1.7'
+    compileOnly 'io.github.lsd-consulting:lsd-distributed-postgres-connector:3.2.0'
+    compileOnly 'io.github.lsd-consulting:lsd-distributed-http-connector:4.0.42'
 
     // Spring
     compileOnly 'org.springframework.boot:spring-boot-starter'
