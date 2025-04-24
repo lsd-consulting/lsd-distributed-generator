@@ -12,7 +12,7 @@ dependencies {
     compileOnly 'org.springframework.boot:spring-boot-starter'
 
     // Other
-    implementation 'com.google.code.gson:gson:2.13.0'
+    implementation 'com.google.code.gson:gson:2.13.1'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.3'
     implementation 'com.j2html:j2html:1.6.0'
 }
