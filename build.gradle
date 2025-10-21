@@ -9,7 +9,7 @@ plugins {
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
     id 'com.palantir.git-version' version '4.0.0'
     id 'jacoco'
-    id 'info.solidsoft.pitest' version '1.15.0'
+    // id 'info.solidsoft.pitest' version '1.15.0' // Disabled: incompatible with Gradle 9
     id 'org.jetbrains.kotlin.jvm' version '2.2.20'
 }
 
@@ -48,6 +48,6 @@ apply from: 'mongoIntegrationTest.gradle'
 apply from: 'postgresIntegrationTest.gradle'
 apply from: 'publishing.gradle'
 apply from: 'test.gradle'
-apply from: 'pitest.gradle'
+// apply from: 'pitest.gradle' // Disabled: pitest plugin incompatible with Gradle 9
 apply from: 'hooks.gradle'
 
