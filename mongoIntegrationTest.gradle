@@ -28,7 +28,7 @@ dependencies {
     mongoIntegrationTestImplementation 'org.testcontainers:junit-jupiter:1.20.1'
 
     // Other
-    mongoIntegrationTestImplementation 'io.mockk:mockk-jvm:1.13.5'
+    mongoIntegrationTestImplementation 'io.mockk:mockk-jvm:1.14.6'
     mongoIntegrationTestImplementation 'org.apache.commons:commons-lang3:3.17.0'
 }
 

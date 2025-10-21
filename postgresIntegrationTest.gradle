@@ -30,7 +30,7 @@ dependencies {
     postgresIntegrationTestImplementation "org.testcontainers:junit-jupiter:1.18.3"
 
     // Other
-    postgresIntegrationTestImplementation 'io.mockk:mockk-jvm:1.13.5'
+    postgresIntegrationTestImplementation 'io.mockk:mockk-jvm:1.14.6'
     postgresIntegrationTestImplementation 'org.apache.commons:commons-lang3:3.12.0'
 }
 
