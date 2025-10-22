@@ -24,8 +24,8 @@ dependencies {
     mongoIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-mongodb-connector:6.1.19'
 
     // Db
-    mongoIntegrationTestImplementation 'org.testcontainers:mongodb:1.20.1'
-    mongoIntegrationTestImplementation 'org.testcontainers:junit-jupiter:1.20.1'
+    mongoIntegrationTestImplementation 'org.testcontainers:mongodb:1.21.3'
+    mongoIntegrationTestImplementation 'org.testcontainers:junit-jupiter:1.21.3'
 
     // Other
     mongoIntegrationTestImplementation 'io.mockk:mockk-jvm:1.14.6'
