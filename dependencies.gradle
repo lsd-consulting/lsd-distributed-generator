@@ -6,7 +6,7 @@ dependencies {
     implementation 'io.github.lsd-consulting:lsd-formatting-library:4.0.63'
     compileOnly 'io.github.lsd-consulting:lsd-distributed-mongodb-connector:6.1.14'
     compileOnly 'io.github.lsd-consulting:lsd-distributed-postgres-connector:3.1.6'
-    compileOnly 'io.github.lsd-consulting:lsd-distributed-http-connector:4.0.44'
+    compileOnly 'io.github.lsd-consulting:lsd-distributed-http-connector:4.0.46'
 
     // Spring
     compileOnly 'org.springframework.boot:spring-boot-starter'
