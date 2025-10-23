@@ -10,7 +10,7 @@ plugins {
     id 'com.palantir.git-version' version '4.1.0'
     id 'jacoco'
     id 'info.solidsoft.pitest' version '1.19.0-rc.2'
-    id 'org.jetbrains.kotlin.jvm' version '2.2.20'
+    id 'org.jetbrains.kotlin.jvm' version '2.2.21'
 }
 
 group = 'io.github.lsd-consulting'
