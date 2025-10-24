@@ -25,7 +25,7 @@ dependencies {
     postgresIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-postgres-connector:2.0.0'
 
     // Db
-    postgresIntegrationTestImplementation 'com.zaxxer:HikariCP:5.1.0'
+    postgresIntegrationTestImplementation 'com.zaxxer:HikariCP:7.0.2'
     postgresIntegrationTestImplementation "org.testcontainers:postgresql:1.21.3"
     postgresIntegrationTestImplementation "org.testcontainers:junit-jupiter:1.21.3"
 
