@@ -21,7 +21,7 @@ dependencies {
     }
 
     // Lsd
-    mongoIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-mongodb-connector:6.1.20'
+    mongoIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-mongodb-connector:7.0.2'
 
     // Db
     mongoIntegrationTestImplementation 'org.testcontainers:mongodb:1.21.3'
