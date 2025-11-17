@@ -31,7 +31,7 @@ dependencies {
 
     // Other
     postgresIntegrationTestImplementation 'io.mockk:mockk-jvm:1.14.6'
-    postgresIntegrationTestImplementation 'org.apache.commons:commons-lang3:3.19.0'
+    postgresIntegrationTestImplementation 'org.apache.commons:commons-lang3:3.20.0'
 }
 
 tasks.register('postgresIntegrationTest', Test) {

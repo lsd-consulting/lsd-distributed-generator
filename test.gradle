@@ -3,7 +3,7 @@ dependencies {
     testImplementation 'org.pitest:pitest-junit5-plugin:1.1.2'
     testImplementation 'org.jeasy:easy-random-core:5.0.0'
     testImplementation 'org.hamcrest:hamcrest-core:3.0'
-    testImplementation 'org.apache.commons:commons-lang3:3.19.0'
+    testImplementation 'org.apache.commons:commons-lang3:3.20.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.9.3'
 }
