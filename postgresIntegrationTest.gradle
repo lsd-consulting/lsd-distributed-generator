@@ -26,8 +26,8 @@ dependencies {
 
     // Db
     postgresIntegrationTestImplementation 'com.zaxxer:HikariCP:7.0.2'
-    postgresIntegrationTestImplementation "org.testcontainers:postgresql:1.21.3"
-    postgresIntegrationTestImplementation "org.testcontainers:junit-jupiter:1.21.3"
+    postgresIntegrationTestImplementation "org.testcontainers:postgresql:1.21.4"
+    postgresIntegrationTestImplementation "org.testcontainers:junit-jupiter:1.21.4"
 
     // Other
     postgresIntegrationTestImplementation 'io.mockk:mockk-jvm:1.14.7'
