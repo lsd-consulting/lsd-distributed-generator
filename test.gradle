@@ -1,5 +1,5 @@
 dependencies {
-    testImplementation 'io.mockk:mockk-jvm:1.14.7'
+    testImplementation 'io.mockk:mockk-jvm:1.14.9'
     testImplementation 'org.pitest:pitest-junit5-plugin:1.1.2'
     testImplementation 'org.jeasy:easy-random-core:5.0.0'
     testImplementation 'org.hamcrest:hamcrest-core:3.0'
