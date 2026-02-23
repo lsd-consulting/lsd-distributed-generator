@@ -5,7 +5,7 @@ dependencies {
     api 'io.github.lsd-consulting:lsd-distributed-connector:2.2.6'
     implementation 'io.github.lsd-consulting:lsd-formatting-library:5.0.15'
     compileOnly 'io.github.lsd-consulting:lsd-distributed-mongodb-connector:7.0.20'
-    compileOnly 'io.github.lsd-consulting:lsd-distributed-postgres-connector:3.1.6'
+    compileOnly 'io.github.lsd-consulting:lsd-distributed-postgres-connector:4.0.18'
     compileOnly 'io.github.lsd-consulting:lsd-distributed-http-connector:6.0.25'
 
     // Spring
