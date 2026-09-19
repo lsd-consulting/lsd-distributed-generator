@@ -57,6 +57,7 @@ class LsdLogger(
                     LsdProperties.getInt("lsd.dist.db.httpStatusMaxLength", DEFAULT_HTTP_STATUS_MAX_LENGTH),
                     LsdProperties.getInt("lsd.dist.db.httpMethodMaxLength", DEFAULT_HTTP_METHOD_MAX_LENGTH),
                     LsdProperties.getInt("lsd.dist.db.profileMaxLength", DEFAULT_PROFILE_MAX_LENGTH),
+                    LsdProperties.getInt("lsd.dist.db.maxNumberOfInteractionsToQuery", DEFAULT_MAX_NUMBER_OF_INTERACTIONS_TO_QUERY),
                 )
 
                 connectionString.startsWith("mongodb://") -> InterceptedDocumentMongoRepository(
