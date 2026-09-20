@@ -22,7 +22,7 @@ dependencies {
     }
 
     // Lsd
-    postgresIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-postgres-connector:2.0.0'
+    postgresIntegrationTestImplementation 'io.github.lsd-consulting:lsd-distributed-postgres-connector:4.0.57'
     postgresIntegrationTestImplementation 'com.fasterxml.jackson.core:jackson-databind'
 
     // Db
